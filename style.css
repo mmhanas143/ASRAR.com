@@ -1,0 +1,53 @@
+body { 
+    font-family: 'Inter', sans-serif; 
+    background-color: #f0f2f5; 
+    scroll-behavior: smooth;
+}
+
+.page-content { 
+    display: none; 
+    min-height: 70vh; 
+}
+
+.loading-dot { 
+    animation: pulse 1.5s infinite; 
+}
+
+@keyframes pulse { 
+    0%, 100% { opacity: 1; } 
+    50% { opacity: 0.5; } 
+}
+
+.chat-container { 
+    max-height: 60vh; 
+    overflow-y: auto; 
+}
+
+.product-card-hover:hover { 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); 
+    transform: translateY(-5px); 
+}
+
+.admin-delete-btn { 
+    position: absolute; 
+    top: 1rem; 
+    right: 1rem; 
+    background-color: rgba(220, 38, 38, 0.8); 
+    color: white; 
+    border-radius: 9999px; 
+    padding: 0.5rem; 
+    transition: all 0.2s; 
+    opacity: 0;
+    visibility: hidden;
+    z-index: 10;
+}
+
+.product-card-hover:hover .admin-delete-btn {
+    opacity: 1;
+    visibility: visible;
+}
+
+.admin-delete-btn:hover { 
+    background-color: rgba(185, 28, 28, 1); 
+    transform: scale(1.1); 
+}
