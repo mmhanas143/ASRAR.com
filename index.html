@@ -3,791 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASRAR CLOTHES - Premium Store</title>
-    <!-- Load Tailwind CSS -->
+    <title>ASRAR CLOTHES - Final Version</title>
+    
+    <!-- Load Tailwind CSS & Lucide Icons from CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        /* Custom styles for a premium look */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5; /* Lighter background */
-        }
-        .page-content {
-            display: none;
-            min-height: 70vh;
-        }
-        .loading-dot {
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        .chat-container {
-            max-height: 50vh;
-            overflow-y: auto;
-        }
-        /* Enhanced Product Card Hover Effect */
-        .product-card-hover:hover {
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Deeper shadow */
-            transform: translateY(-5px);
-        }
-    </style>
+    
+    <!-- Link to your external CSS file -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header class="sticky top-0 z-50 bg-white shadow-xl">
-        <!-- Added 'relative' to this container to make the menu absolute position relative to it. -->
         <div class="max-w-7xl mx-auto flex justify-between items-center p-4 relative"> 
-            <div id="logo-button" onclick="renderPage('home')" class="text-3xl font-extrabold text-indigo-800 cursor-pointer tracking-wider">
-                ASRAR CLOTHES
-            </div>
-            
-            <!-- Menu Button -->
-            <button id="menu-button" class="p-3 text-indigo-700 rounded-full hover:bg-gray-100 transition duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <i data-lucide="more-vertical" class="w-7 h-7"></i>
-            </button>
-
-            <!-- Dropdown Menu Content -->
-            <!-- Using mt-5 for precise vertical alignment as requested -->
-            <div id="dropdown-menu" class="absolute hidden right-4 mt-5 w-40 max-w-full bg-white rounded-xl shadow-3xl py-2 z-20 border border-gray-100 origin-top-right transition-transform duration-300">
-                <!-- Menu items will be populated by JavaScript -->
-            </div>
+            <div id="logo-button" class="text-3xl font-extrabold text-indigo-800 cursor-pointer tracking-wider">ASRAR CLOTHES</div>
+            <button id="menu-button" class="p-3 text-indigo-700 rounded-full hover:bg-gray-100 transition duration-300"><i data-lucide="more-vertical" class="w-7 h-7"></i></button>
+            <div id="dropdown-menu" class="absolute hidden right-4 top-full mt-2 w-48 max-w-full bg-white rounded-xl shadow-3xl py-2 z-20 border origin-top-right"></div>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto p-4 md:p-8">
-        
-        <!-- HOME PAGE -->
-        <div id="home-page" class="page-content space-y-10 md:space-y-12">
-            <!-- Hero Section: Responsive padding/text size -->
-            <div class="bg-gradient-to-r from-indigo-900 to-indigo-600 text-white p-8 md:p-14 rounded-3xl shadow-2xl text-center transform hover:scale-[1.005] transition duration-500">
-                <h1 class="text-4xl md:text-6xl font-black mb-3 md:mb-4" data-i18n="hero_title"></h1>
-                <p class="text-base md:text-xl opacity-90 mb-6 md:mb-8" data-i18n="hero_subtitle"></p>
-                <button onclick="document.getElementById('product-grid-section').scrollIntoView({ behavior: 'smooth' })" class="px-6 py-2 md:px-8 md:py-3 font-bold rounded-full bg-white text-indigo-700 hover:bg-gray-100 transition duration-300 shadow-xl text-base md:text-lg" data-i18n="hero_button"></button>
-            </div>
-            
-            <!-- Search Bar: Modern Look -->
-            <input 
-                type="text" 
-                id="search-input"
-                oninput="handleSearch(this.value)"
-                class="w-full p-4 rounded-full border-2 border-indigo-300 focus:border-indigo-600 transition-all shadow-lg focus:shadow-xl outline-none" 
-                data-i18n-placeholder="search_placeholder"
-            />
-            
-            <h2 id="product-grid-section" class="text-3xl md:text-4xl font-extrabold text-gray-800 mt-10 border-b-4 border-indigo-500 pb-3 inline-block" data-i18n="our_collection"></h2>
-            <!-- Product Grid: Grid-cols-1 for mobile, then scales up -->
-            <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-10">
-                <!-- Products will be injected here -->
-            </div>
-        </div>
-
-        <!-- PRODUCT DETAIL PAGE -->
-        <div id="product-detail-page" class="page-content space-y-8 md:space-y-12 max-w-6xl mx-auto">
-            <!-- Dynamic content will be injected here by renderProductDetail -->
-        </div>
-
-        <!-- SELLER INFO PAGE -->
-        <div id="seller-info-page" class="page-content max-w-3xl mx-auto bg-white p-6 md:p-8 rounded-3xl shadow-2xl">
-            <h1 class="text-3xl md:text-4xl font-extrabold text-indigo-700 mb-6 border-b pb-2" data-i18n="seller_info_title"></h1>
-            <p class="text-gray-600 mb-6 text-base md:text-lg" data-i18n="about_seller_text_full"></p>
-            <div class="space-y-4 pt-4 border-t mt-4 text-sm md:text-base">
-                <h3 class="text-xl md:text-2xl font-bold text-gray-800" data-i18n="contact_info"></h3>
-                <p class="flex items-center text-gray-700"><i data-lucide="mail" class="w-5 h-5 md:w-6 md:h-6 mr-3 text-indigo-500"></i> <span class='font-semibold' data-i18n="seller_contact"></span> example@gmail.com</p>
-                <p class="flex items-center text-gray-700"><i data-lucide="facebook" class="w-5 h-5 md:w-6 md:h-6 mr-3 text-indigo-500"></i> Facebook: facebook.com/example</p>
-                <p class="flex items-center text-gray-700"><i data-lucide="phone" class="w-5 h-5 md:w-6 md:h-6 mr-3 text-indigo-500"></i> <span class='font-semibold' data-i18n="phone"></span> +8801xxxxxxxxx</p>
-            </div>
-        </div>
-
-        <!-- ASK GEMINI PAGE -->
-        <div id="ask-gemini-page" class="page-content max-w-4xl mx-auto bg-white p-6 md:p-8 rounded-3xl shadow-2xl flex flex-col h-[70vh]">
-            <h1 class="text-3xl md:text-4xl font-extrabold text-indigo-700 mb-4" data-i18n="ask_gemini_title"></h1>
-            <p class="text-sm md:text-base text-gray-500 mb-6 border-b pb-3" data-i18n="ask_gemini_desc"></p>
-
-            <div id="chat-container" class="chat-container flex-grow p-4 space-y-4 bg-gray-50 rounded-xl border mb-6">
-                <!-- Chat messages will be appended here -->
-            </div>
-
-            <div class="flex space-x-3 md:space-x-4">
-                <input
-                    type="text"
-                    id="chat-input"
-                    class="flex-grow p-3 md:p-4 border border-gray-300 rounded-full focus:ring-4 focus:ring-indigo-200 transition outline-none"
-                    data-i18n-placeholder="chat_placeholder"
-                />
-                <button id="send-button" class="px-5 py-2 md:px-6 md:py-3 font-semibold rounded-full bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300 shadow-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
-                    <i data-lucide="send" class="w-5 h-5 md:w-6 md:h-6"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- ABOUT PAGE -->
-        <div id="about-page" class="page-content max-w-3xl mx-auto bg-white p-6 md:p-8 rounded-3xl shadow-2xl">
-            <h1 class="text-3xl md:text-4xl font-extrabold text-indigo-700 mb-6 border-b pb-2" data-i18n="about_page_title"></h1>
-            <div class="space-y-4 text-gray-600 text-base md:text-lg">
-                <p><strong>Design by:</strong> MMH ANAS</p>
-                <p><strong>Developed by:</strong> Gemini with MMH ANAS</p>
-                <p><strong>Contact:</strong> mmhanas14@gmail.com</p>
-            </div>
-            
-            <div class="mt-8 pt-4 border-t">
-                <h3 class="text-xl md:text-2xl font-bold text-gray-800" data-i18n="system_info"></h3>
-                <p><strong>Build:</strong> MKD_17-D_OCT-M_2025-Y</p>
-                <p><strong>Last update:</strong> 20/OCT/2025</p>
-                <p><strong data-i18n="version"></strong>: 2.5.7 (WhatsApp Integration)</p>
-                <p><strong>Security:</strong> G-Rapid</p>
-                <p><strong>Firmware:</strong> M12e</p>
-                <p><strong>Release:</strong> GitHub</p>
-            </div>
-        </div>
-
+        <!-- All Page containers are here. JS will fill them. -->
+        <div id="home-page" class="page-content"></div>
+        <div id="product-detail-page" class="page-content"></div>
+        <div id="seller-info-page" class="page-content"></div>
+        <div id="ask-gemini-page" class="page-content"></div>
+        <div id="about-page" class="page-content"></div>
     </main>
     
     <!-- MODALS -->
-
-    <!-- Order Form Modal (NEW) -->
-    <div id="order-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100] p-4">
-        <div class="bg-white p-6 md:p-8 rounded-3xl shadow-3xl max-w-lg w-full relative">
-            <button onclick="closeModal('order-modal')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-900 transition">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-            <h2 class="text-2xl md:text-3xl font-bold text-green-700 mb-2 border-b pb-2" data-i18n="place_order_title"></h2>
-            <p class="text-gray-600 mb-4" data-i18n="ordering_product_text"></p>
-            <p id="order-modal-product-name" class="text-lg font-semibold text-indigo-600 mb-6"></p>
-
-            <form id="order-form" onsubmit="event.preventDefault(); submitOrder();" class="space-y-4">
+    <!-- Admin Login Modal -->
+    <div id="admin-login-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100] p-4">
+         <div class="bg-white p-8 rounded-3xl shadow-3xl max-w-sm w-full relative">
+            <button onclick="closeModal('admin-login-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800"><i data-lucide="x"></i></button>
+            <h2 class="text-3xl font-bold text-indigo-700 mb-6 border-b pb-2" data-i18n="admin_login"></h2>
+            <input type="email" id="admin-username" placeholder="Username (mmhanas14@gmail.com)" class="w-full p-4 mb-4 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-400" />
+            <input type="password" id="admin-password" placeholder="Password (ANas@2011)" class="w-full p-4 mb-6 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-400" />
+            <button onclick="handleAdminLogin()" class="w-full py-3 font-semibold rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition shadow-lg" data-i18n="login"></button>
+        </div>
+    </div>
+    
+    <!-- Add Product Modal -->
+    <div id="add-product-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100] p-4">
+        <div class="bg-white p-6 md:p-8 rounded-3xl shadow-3xl max-w-lg w-full relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('add-product-modal')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-900"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <h2 class="text-2xl md:text-3xl font-bold text-indigo-700 mb-6 border-b pb-2" data-i18n="add_new_product"></h2>
+            <form id="add-product-form" onsubmit="event.preventDefault(); handleAddProduct();" class="space-y-4">
                 <div>
-                    <label for="order-name" class="block text-sm font-medium text-gray-700" data-i18n="name"></label>
-                    <input type="text" id="order-name" required class="w-full mt-1 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" data-i18n-placeholder="name_placeholder" />
+                    <label class="block text-sm font-medium text-gray-700" data-i18n="product_name"></label>
+                    <input type="text" id="product-name" required class="w-full mt-1 p-3 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-400" />
                 </div>
                 <div>
-                    <label for="order-address" class="block text-sm font-medium text-gray-700" data-i18n="address"></label>
-                    <textarea id="order-address" required rows="2" class="w-full mt-1 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" data-i18n-placeholder="address_placeholder"></textarea>
+                    <label class="block text-sm font-medium text-gray-700" data-i18n="product_price"></label>
+                    <input type="number" id="product-price" required class="w-full mt-1 p-3 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-400" />
                 </div>
                 <div>
-                    <label for="order-phone" class="block text-sm font-medium text-gray-700" data-i18n="phone_number"></label>
-                    <input type="tel" id="order-phone" required class="w-full mt-1 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" data-i18n-placeholder="phone_placeholder" />
-                </div>
-                <div>
-                    <label for="order-email" class="block text-sm font-medium text-gray-700" data-i18n="email_optional"></label>
-                    <input type="email" id="order-email" class="w-full mt-1 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" data-i18n-placeholder="email_placeholder" />
+                    <label class="block text-sm font-medium text-gray-700" data-i18n="product_description"></label>
+                    <textarea id="product-description" required rows="3" class="w-full mt-1 p-3 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-400"></textarea>
                 </div>
                 
-                <button type="submit" class="w-full px-6 py-3 font-semibold rounded-xl bg-green-600 text-white hover:bg-green-700 transition duration-300 shadow-lg text-base mt-6 flex items-center justify-center">
-                    <i data-lucide="whatsapp" class="w-5 h-5 mr-3"></i>
-                    <span data-i18n="send_order_whatsapp"></span>
-                </button>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700" data-i18n="product_images"></label>
+                    <p class="text-xs text-gray-500 mb-2" data-i18n="images_helper_text"></p>
+                    <div id="image-inputs-container" class="space-y-2">
+                        <!-- JS will populate this -->
+                    </div>
+                    <button type="button" id="add-image-field-btn" class="mt-3 text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                        + <span data-i18n="add_another_image"></span>
+                    </button>
+                </div>
+
+                <button type="submit" class="w-full py-3 font-semibold rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition shadow-lg mt-6" data-i18n="add_product"></button>
             </form>
         </div>
     </div>
-
-
+    
     <!-- Language Modal -->
-    <div id="lang-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100] p-4">
-        <div class="bg-white p-6 md:p-8 rounded-3xl shadow-3xl max-w-sm w-full relative">
-            <button onclick="closeModal('lang-modal')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-900 transition">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-            <h2 class="text-2xl md:text-3xl font-bold text-indigo-700 mb-6 border-b pb-2" data-i18n="select_lang"></h2>
-            <button onclick="handleLanguageChange('en')" class="w-full mb-4 px-6 py-3 font-semibold rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition duration-300 shadow-lg text-base">English</button>
-            <button onclick="handleLanguageChange('bn')" class="w-full px-6 py-3 font-semibold rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300 shadow-lg text-base">বাংলা</button>
-        </div>
+    <div id="lang-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100] p-4">
+        <!-- Language Modal content here -->
     </div>
 
-    <!-- Admin Login Modal -->
-    <div id="admin-login-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100] p-4">
-        <div class="bg-white p-6 md:p-8 rounded-3xl shadow-3xl max-w-sm w-full relative">
-            <button onclick="closeModal('admin-login-modal')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-900 transition">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-            <h2 class="text-2xl md:text-3xl font-bold text-indigo-700 mb-6 border-b pb-2" data-i18n="admin_login"></h2>
-            <input type="email" id="admin-username" placeholder="Username (mmhanas14@gmail.com)" class="w-full p-3 md:p-4 mb-4 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" />
-            <input type="password" id="admin-password" placeholder="Password (ANas@2011)" class="w-full p-3 md:p-4 mb-6 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" />
-            <button onclick="handleAdminLogin()" class="w-full px-6 py-3 font-semibold rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300 shadow-lg text-base" data-i18n="login"></button>
-        </div>
+    <!-- Order Modal -->
+    <div id="order-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100] p-4">
+        <!-- Order Modal content here -->
     </div>
 
-
-    <script>
-        // --- TRANSLATION DATA ---
-        const translations = {
-            en: { 
-                home: "Home", seller_info: "Seller Info", ask_gemini: "Ask Gemini", about: "About", change_language: "Change Language",
-                seller_info_title: "Seller Information", about_seller_text_full: "About ASRAR Clothes: We provide the best quality clothes for you, prioritizing elegance, comfort, and modern design.", seller_contact: "Seller Contact:", phone: "Phone:", 
-                ask_gemini_title: "Ask Gemini, Your Style Consultant", ask_gemini_desc: "Ask me anything about fashion, products, or styling tips! Please note: a valid Gemini API key is required.", send: "Send", 
-                about_page_title: "About ASRAR Clothes & System Info", version: "Version", our_collection: "Our Collection", contact_info: "Contact Information:", system_info: "System Information",
-                hero_title: "Welcome to ASRAR CLOTHES", hero_subtitle: "Discover the finest collection of modern apparel designed for confidence.", hero_button: "Explore Collection",
-                select_lang: "Select Language", admin_login: "Admin Login", login: "Login", chat_placeholder: "Type your question...", buy_now: "Buy Now", order_now: "Order Now",
-                gemini_loading: "Gemini is typing...", gemini_error: "Error: Could not connect to the service. Please check your API key and connection.",
-                search_placeholder: "Search by name or description...", wrong_credentials: "Wrong credentials!", product_details: "Product Details", other_products: "More from ASRAR",
-
-                // NEW ORDER MODAL STRINGS
-                place_order_title: "Place Your Order",
-                ordering_product_text: "You are ordering:",
-                name: "Name",
-                name_placeholder: "Your Full Name",
-                address: "Delivery Address",
-                address_placeholder: "Full Address with City/Village and District",
-                phone_number: "Phone Number",
-                phone_placeholder: "01xxxxxxxxx (Must be reachable)",
-                email_optional: "Email Address (Optional)",
-                email_placeholder: "your@email.com",
-                send_order_whatsapp: "Send Order via WhatsApp",
-                fill_all_fields: "Please fill in Name, Address, and Phone Number.",
-            },
-            bn: { 
-                home: "হোম", seller_info: "বিক্রেতার তথ্য", ask_gemini: "Gemini কে জিজ্ঞাসা করুন", about: "সম্পর্কে", change_language: "ভাষা পরিবর্তন করুন",
-                seller_info_title: "বিক্রেতার তথ্য", about_seller_text_full: "ASRAR Clothes সম্পর্কে: আমরা আপনার জন্য সেরা মানের পোশাক সরবরাহ করি, যেখানে কমনীয়তা, আরাম এবং আধুনিক ডিজাইনের উপর জোর দেওয়া হয়।", seller_contact: "বিক্রেতার যোগাযোগ:", phone: "ফোন:", 
-                ask_gemini_title: "Gemini কে জিজ্ঞাসা করুন, আপনার স্টাইল কনসালট্যান্ট", ask_gemini_desc: "ফ্যাশন, পণ্য বা স্টাইলিং টিপস সম্পর্কে আমাকে যেকোনো কিছু জিজ্ঞাসা করুন! দয়া করে মনে রাখবেন: একটি বৈধ Gemini API কী প্রয়োজন।", send: "পাঠান", 
-                about_page_title: "ASRAR Clothes এবং সিস্টেম তথ্য", version: "ভার্সন", our_collection: "আমাদের সংগ্রহ", contact_info: "যোগাযোগের তথ্য:", system_info: "সিস্টেম তথ্য",
-                hero_title: "ASRAR CLOTHES-এ স্বাগতম", hero_subtitle: "আত্মবিশ্বাসের জন্য ডিজাইন করা আধুনিক পোশাকের সেরা সংগ্রহ আবিষ্কার করুন।", hero_button: "সংগ্রহ দেখুন",
-                select_lang: "ভাষা নির্বাচন করুন", admin_login: "অ্যাডমিন লগইন", login: "লগইন", chat_placeholder: "আপনার প্রশ্ন টাইপ করুন...", buy_now: "এখনই কিনুন", order_now: "এখনই অর্ডার করুন",
-                gemini_loading: "জেমিনি লিখছে...", gemini_error: "ত্রুটি: পরিষেবার সাথে সংযোগ করা যায়নি। আপনার API কী এবং সংযোগ পরীক্ষা করুন।",
-                search_placeholder: "নাম বা বর্ণনা দিয়ে অনুসন্ধান করুন...", wrong_credentials: "ভুল শংসাপত্র!", product_details: "পণ্যের বিস্তারিত", other_products: "ASRAR থেকে আরও পণ্য",
-
-                // NEW ORDER MODAL STRINGS
-                place_order_title: "আপনার অর্ডার দিন",
-                ordering_product_text: "আপনি অর্ডার করছেন:",
-                name: "নাম",
-                name_placeholder: "আপনার পুরো নাম",
-                address: "ডেলিভারি ঠিকানা",
-                address_placeholder: "জেলা/উপজেলা সহ সম্পূর্ণ ঠিকানা",
-                phone_number: "ফোন নম্বর",
-                phone_placeholder: "01xxxxxxxxx (যোগাযোগযোগ্য হতে হবে)",
-                email_optional: "ইমেইল ঠিকানা (ঐচ্ছিক)",
-                email_placeholder: "your@email.com",
-                send_order_whatsapp: "হোয়াটসঅ্যাপে অর্ডার পাঠান",
-                fill_all_fields: "অনুগ্রহ করে নাম, ঠিকানা এবং ফোন নম্বর পূরণ করুন।",
-            }
-        };
-
-        // --- PRODUCT DATA (Same data structure, only images are high-res placeholders) ---
-        const initialProducts = [
-            { 
-                id: 'prod1', 
-                name: 'Classic Denim Jacket', 
-                price: 3500, 
-                description: 'A timeless denim jacket that is perfect for any season. Made with high-quality, durable denim, it features classic button-front styling and multiple pockets. It is a wardrobe essential.', 
-                images: [
-                    'https://images.unsplash.com/photo-1543087902-61618aa2b89a?q=80&w=1200&auto=format&fit=crop', // Image 1
-                    'https://images.unsplash.com/photo-1588887463518-e377db7492c3?q=80&w=1200&auto=format&fit=crop', // Image 2
-                    'https://images.unsplash.com/photo-1579758776652-302a99144405?q=80&w=1200&auto=format&fit=crop'  // Image 3
-                ] 
-            }, 
-            { 
-                id: 'prod2', 
-                name: 'Premium Cotton T-Shirt', 
-                price: 1200, 
-                description: 'Experience ultimate comfort with our premium cotton T-shirt. It is soft, breathable, and designed for a perfect fit, making it an essential addition to your wardrobe. Available in multiple colours.', 
-                images: [
-                    'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop', 
-                    'https://images.unsplash.com/photo-1622470942513-242385b39943?q=80&w=1200&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1200&auto=format&fit=crop'
-                ] 
-            },
-            { 
-                id: 'prod3', 
-                name: 'Elegant Black Hoodie', 
-                price: 2800, 
-                description: 'Stay warm and stylish with our elegant black hoodie. Crafted from a soft fleece blend, it features a drawstring hood and a spacious kangaroo pocket for added comfort and functionality.', 
-                images: [
-                    'https://images.unsplash.com/photo-1556821855-0a3OAa3195de?q=80&w=1200&auto=format&fit=crop', 
-                    'https://images.unsplash.com/photo-1610475176212-5d755b707cb5?q=80&w=1200&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1596752763297-76b4a3a30c51?q=80&w=1200&auto=format&fit=crop'
-                ] 
-            },
-             { 
-                id: 'prod4', 
-                name: 'Stylish White Sneaker', 
-                price: 4500, 
-                description: 'A comfortable and versatile white sneaker perfect for casual and semi-formal wear. Features a durable rubber sole and premium leather upper.', 
-                images: [
-                    'https://images.unsplash.com/photo-1600269460515-d910a90400b1?q=80&w=1200&auto=format&fit=crop', 
-                    'https://images.unsplash.com/photo-1595950653106-6c9ebd621aa0?q=80&w=1200&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1600269460515-d910a90400b1?q=80&w=1200&auto=format&fit=crop'
-                ] 
-            }
-        ];
-
-        let currentLanguage = localStorage.getItem('language') || 'en';
-        let chatHistory = [];
-        let isChatLoading = false;
-        let currentPage = 'home'; 
-        let orderingProduct = null; // Store the product being ordered
-
-        // --- CORE FUNCTIONS ---
-
-        function T(key) {
-            return translations[currentLanguage][key] || translations['en'][key] || key;
-        }
-
-        function applyTranslations() {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                el.textContent = T(key);
-            });
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                el.placeholder = T(key);
-            });
-            // Re-render menu to update labels
-            createMenuItems(); 
-        }
-
-        function renderPage(pageId, data = null) {
-            currentPage = pageId;
-            document.querySelectorAll('.page-content').forEach(page => {
-                page.style.display = 'none';
-            });
-            
-            const page = document.getElementById(pageId + '-page');
-            if (page) {
-                page.style.display = 'block';
-                // *** Scroll to the top to ensure product details are visible immediately on click ***
-                window.scrollTo(0, 0); 
-            }
-            
-            if (pageId === 'product-detail' && data) {
-                renderProductDetail(data);
-            } else if (pageId === 'home') {
-                 document.getElementById('search-input').value = '';
-                 renderProducts();
-            }
-
-            document.getElementById('dropdown-menu').classList.add('hidden');
-            lucide.createIcons();
-        }
-        
-        // --- ORDERING LOGIC (NEW) ---
-
-        function openOrderModal(product) {
-            orderingProduct = product;
-            document.getElementById('order-modal-product-name').textContent = product.name;
-            openModal('order-modal');
-            lucide.createIcons(); // Ensure the WhatsApp icon in modal is rendered
-        }
-
-        function submitOrder() {
-            if (!orderingProduct) {
-                console.error('Order error: No product selected.');
-                closeModal('order-modal');
-                return;
-            }
-
-            // Get form values and trim whitespace
-            const name = document.getElementById('order-name').value.trim();
-            const address = document.getElementById('order-address').value.trim();
-            const phone = document.getElementById('order-phone').value.trim();
-            const email = document.getElementById('order-email').value.trim();
-
-            // Basic Validation - Name, Address, Phone are Mandatory
-            if (!name || !address || !phone) {
-                // Using a custom message box/alert replacement for user feedback
-                console.error(T('fill_all_fields')); 
-                alert(T('fill_all_fields')); // Temporary use of built-in alert for simplicity
-                return;
-            }
-
-            const product = orderingProduct;
-            // Target number provided by the user, without the '+' sign
-            const targetNumber = '8801924445908'; 
-
-            // Construct the message (formatted in both languages for context, but using Bangla strings for filling)
-            const message = `
-*ASRAR CLOTHES* এর জন্য নতুন অর্ডার!
-        
-*পণ্য:* ${product.name} (ID: ${product.id})
-*মূল্য:* ${product.price} TK
-        
-*গ্রাহকের তথ্য:*
-*নাম:* ${name}
-*ঠিকানা:* ${address}
-*ফোন:* ${phone}
-*ইমেইল:* ${email || 'দেওয়া হয়নি'}
-`;
-
-            // Encode the message to ensure line breaks and special characters work in WhatsApp URL
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/${targetNumber}?text=${encodedMessage}`;
-            
-            // Redirect to WhatsApp
-            window.open(whatsappUrl, '_blank');
-
-            // Reset form and close modal after redirection attempt
-            document.getElementById('order-form').reset();
-            closeModal('order-modal');
-            orderingProduct = null;
-        }
-
-        // --- PRODUCT RENDERING ---
-
-        function renderProductCard(product) {
-            return `
-                <div onclick="renderPage('product-detail', ${JSON.stringify(product).replace(/"/g, '&quot;')})" 
-                    class="product-card-hover bg-white rounded-3xl overflow-hidden shadow-xl transition-all duration-300 transform cursor-pointer border border-gray-100"
-                >
-                    <img 
-                        src="${product.images[0]}" 
-                        alt="${product.name}" 
-                        class="w-full h-72 md:h-80 object-cover transform hover:scale-105 transition duration-500"
-                        onerror="this.onerror=null; this.src='https://placehold.co/500x500/e0e0e0/555?text=Image+Missing';"
-                    />
-                    <div class="p-4 md:p-6 text-center">
-                        <h3 class="text-lg md:text-xl font-bold text-gray-800 truncate mb-1">${product.name}</h3>
-                        <p class="text-2xl md:text-3xl font-extrabold text-indigo-600 mt-2 mb-4">${product.price} TK</p>
-                        <button onclick="event.stopPropagation(); console.log('Buy: ${product.id}')" class="w-full px-4 py-2 font-bold rounded-full bg-indigo-500 text-white hover:bg-indigo-600 transition duration-300 shadow-md text-sm md:text-base">${T('buy_now')}</button>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function renderProducts(products = initialProducts) {
-            const container = document.getElementById('product-list');
-            if (products.length === 0) {
-                 container.innerHTML = `<p class="text-center text-2xl text-gray-500 col-span-full">Sorry, no products found matching your search.</p>`;
-            } else {
-                 container.innerHTML = products.map(renderProductCard).join('');
-            }
-        }
-        
-        function handleSearch(query) {
-            const normalizedQuery = query.toLowerCase().trim();
-            if (normalizedQuery === "") {
-                renderProducts(initialProducts);
-                return;
-            }
-            
-            const filteredProducts = initialProducts.filter(product => 
-                product.name.toLowerCase().includes(normalizedQuery) ||
-                product.description.toLowerCase().includes(normalizedQuery)
-            );
-            
-            renderProducts(filteredProducts);
-        }
-
-        // --- PRODUCT DETAIL PAGE LOGIC ---
-        let currentProductSliderIndex = 0;
-
-        function changeProductImage(direction) {
-            const slider = document.getElementById('image-slider');
-            const images = slider.querySelectorAll('img');
-            
-            currentProductSliderIndex += direction;
-
-            if (currentProductSliderIndex >= images.length) {
-                currentProductSliderIndex = 0;
-            } else if (currentProductSliderIndex < 0) {
-                currentProductSliderIndex = images.length - 1;
-            }
-
-            slider.setAttribute('data-current-index', currentProductSliderIndex);
-            images.forEach((img, index) => {
-                img.classList.add('hidden');
-                if (index === currentProductSliderIndex) {
-                    img.classList.remove('hidden');
-                }
-            });
-        }
-        
-        function navigateProductImage(index) {
-            const slider = document.getElementById('image-slider');
-            const images = slider.querySelectorAll('img');
-            
-            currentProductSliderIndex = index;
-            slider.setAttribute('data-current-index', currentProductSliderIndex);
-
-            images.forEach((img, idx) => {
-                img.classList.add('hidden');
-                if (idx === currentProductSliderIndex) {
-                    img.classList.remove('hidden');
-                }
-            });
-        }
-        
-        function renderProductDetail(product) {
-            const detailPage = document.getElementById('product-detail-page');
-            currentProductSliderIndex = 0; // Reset slider index
-            
-            const otherProducts = initialProducts.filter(p => p.id !== product.id).slice(0, 4);
-            
-            detailPage.innerHTML = `
-                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-12 bg-white p-6 md:p-8 rounded-3xl shadow-3xl">
-                    <!-- Image Slider Column (Col 1-3) - FIRST ON MOBILE (grid-cols-1 default) -->
-                    <div class="lg:col-span-3 space-y-4 md:space-y-6">
-                        <div id="image-slider" data-current-index="0" class="relative overflow-hidden rounded-2xl shadow-2xl h-[380px] lg:h-[500px]">
-                            ${product.images.map((imgUrl, index) => `
-                                <img 
-                                    src="${imgUrl}" 
-                                    alt="${product.name} Image ${index + 1}" 
-                                    class="w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-300 ${index !== 0 ? 'hidden' : ''}"
-                                    onerror="this.onerror=null; this.src='https://placehold.co/1200x800/e0e0e0/555?text=Image+Missing';"
-                                >
-                            `).join('')}
-                            
-                            <button onclick="changeProductImage(-1)" class="absolute top-1/2 left-2 md:left-4 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 md:p-4 rounded-full transition focus:outline-none">
-                                <i data-lucide="chevron-left" class="w-5 h-5 md:w-6 md:h-6"></i>
-                            </button>
-                            <button onclick="changeProductImage(1)" class="absolute top-1/2 right-2 md:right-4 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 md:p-4 rounded-full transition focus:outline-none">
-                                <i data-lucide="chevron-right" class="w-5 h-5 md:w-6 md:h-6"></i>
-                            </button>
-                        </div>
-                        
-                        <div class="flex justify-start space-x-2 md:space-x-3 overflow-x-auto">
-                            ${product.images.map((imgUrl, index) => `
-                                <div onclick="navigateProductImage(${index})" 
-                                     class="w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden border-2 border-transparent cursor-pointer transition hover:border-indigo-600 active-thumbnail"
-                                >
-                                    <img src="${imgUrl}" class="w-full h-full object-cover">
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-
-                    <!-- Product Info Column (Col 4-5) - SECOND ON MOBILE, BUT IMMEDIATELY AFTER IMAGE -->
-                    <div class="lg:col-span-2 lg:sticky lg:top-24 space-y-4 md:space-y-6">
-                        <h1 class="text-3xl md:text-4xl font-black text-gray-900">${product.name}</h1>
-                        <p class="text-3xl md:text-4xl font-extrabold text-red-600 border-b pb-4">${product.price} TK</p>
-                        <p class="text-base md:text-lg text-gray-700 leading-relaxed">${product.description}</p>
-                        
-                        <div class="space-y-3 md:space-y-4 pt-4 md:pt-6 border-t border-gray-100">
-                            <!-- UPDATED: Order button now calls the openOrderModal function -->
-                            <button onclick="openOrderModal(${JSON.stringify(product).replace(/"/g, '&quot;')})" class="w-full px-5 py-3 md:px-6 md:py-4 font-bold rounded-xl bg-green-600 text-white hover:bg-green-700 transition duration-300 shadow-lg text-base md:text-lg flex items-center justify-center">
-                                <i data-lucide="shopping-bag" class="w-5 h-5 mr-2 md:w-6 md:h-6 md:mr-3"></i> 
-                                <span data-i18n="order_now">${T('order_now')}</span>
-                            </button>
-                            <button onclick="prefillGeminiQuery('${product.name}', '${product.description.substring(0, 50)}...') " class="w-full px-5 py-3 md:px-6 md:py-4 font-bold rounded-xl bg-indigo-700 text-white hover:bg-indigo-800 transition duration-300 shadow-lg text-base md:text-lg flex items-center justify-center">
-                                <i data-lucide="sparkles" class="w-5 h-5 mr-2 md:w-6 md:h-6 md:mr-3"></i> 
-                                <span data-i18n="ask_gemini">${T('ask_gemini')}</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Other Products Section -->
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mt-8 md:mt-12 mb-4 md:mb-6 border-b-4 border-indigo-300 pb-2 inline-block" data-i18n="other_products">${T('other_products')}</h2>
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-                    ${otherProducts.map(renderProductCard).join('')}
-                </div>
-            `;
-            lucide.createIcons();
-        }
-        
-        // --- GEMINI CHAT LOGIC (Kept same for stability) ---
-
-        function prefillGeminiQuery(productName, productDescSnippet) {
-            const initialQuery = `Can you tell me more about the "${productName}"? Its description is: "${productDescSnippet}"`;
-            renderPage('ask-gemini');
-            
-            setTimeout(() => {
-                const chatInput = document.getElementById('chat-input');
-                if (chatInput) {
-                    chatInput.value = initialQuery;
-                    handleSendGemini(true); 
-                }
-            }, 100);
-        }
-        
-        function appendMessage(sender, text, isError = false) {
-            const container = document.getElementById('chat-container');
-            const messageDiv = document.createElement('div');
-            const isUser = sender === 'You';
-            
-            messageDiv.className = `flex ${isUser ? 'justify-end' : 'justify-start'}`;
-            
-            let contentHTML = `<p class="font-semibold text-sm">${sender}</p><p class="text-sm md:text-base">${text}</p>`;
-            
-            if (text === T('gemini_loading')) {
-                contentHTML = `<p class="font-semibold text-sm">${sender}</p><div class="flex space-x-1 mt-2">
-                    <div class="h-2 w-2 bg-indigo-400 rounded-full loading-dot"></div>
-                    <div class="h-2 w-2 bg-indigo-400 rounded-full loading-dot" style="animation-delay: 0.2s;"></div>
-                    <div class="h-2 w-2 bg-indigo-400 rounded-full loading-dot" style="animation-delay: 0.4s;"></div>
-                </div>`;
-            }
-
-            messageDiv.innerHTML = `
-                <div class="max-w-[80%] p-3 md:p-4 rounded-xl shadow-md ${isUser ? 'bg-indigo-600 text-white rounded-br-none' : (isError ? 'bg-red-200 text-red-800 rounded-tl-none' : 'bg-gray-200 text-gray-800 rounded-tl-none')}">
-                    ${contentHTML}
-                </div>
-            `;
-            container.appendChild(messageDiv);
-            container.scrollTop = container.scrollHeight;
-            return messageDiv;
-        }
-
-        async function handleSendGemini(isAutoSend = false) {
-            const input = document.getElementById('chat-input');
-            const userMessage = input.value.trim();
-            if (!userMessage || isChatLoading) return;
-
-            appendMessage('You', userMessage);
-            chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
-            input.value = '';
-
-            isChatLoading = true;
-            document.getElementById('send-button').disabled = true;
-            input.disabled = true;
-            const loadingElement = appendMessage('Gemini', T('gemini_loading'));
-
-            const apiKey = "AIzaSyDAZKGJi35LuORxu2-lEU2qVjS97cStuac"; // <--- আপনার Gemini API Key এখানে বসান
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            const maxRetries = 3;
-            let retries = 0;
-            let geminiResponseText = T('gemini_error');
-            let success = false;
-            let isError = false;
-
-            while (retries < maxRetries) {
-                try {
-                    const payload = {
-                        contents: chatHistory, 
-                        systemInstruction: { parts: [{ text: "You are a helpful and friendly fashion consultant and AI assistant for ASRAR CLOTHES. Respond concisely and professionally, focusing on fashion, product details, and styling tips." }] },
-                        tools: [{ google_search: {} }],
-                    };
-
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`API error: ${response.status}`);
-                    }
-
-                    const result = await response.json();
-                    const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                    if (text) {
-                        geminiResponseText = text;
-                        success = true;
-                        break; 
-                    } else {
-                        throw new Error("Empty response from API");
-                    }
-
-                } catch (error) {
-                    console.error("Gemini API call failed:", error);
-                    retries++;
-                    if (retries < maxRetries) {
-                        await new Promise(resolve => setTimeout(resolve, Math.pow(2, retries) * 1000));
-                    } else {
-                        isError = true;
-                    }
-                }
-            }
-            
-            loadingElement.remove(); 
-            appendMessage('Gemini', geminiResponseText, isError);
-
-            if (success) {
-                chatHistory.push({ role: "model", parts: [{ text: geminiResponseText }] });
-            } else {
-                chatHistory.pop(); 
-            }
-
-            isChatLoading = false;
-            document.getElementById('send-button').disabled = false;
-            input.disabled = false;
-        }
-
-        // --- UTILITY/SETUP FUNCTIONS (Kept same for stability) ---
-
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.remove('hidden');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-        }
-
-        function handleLanguageChange(lang) {
-            currentLanguage = lang;
-            localStorage.setItem('language', lang);
-            applyTranslations();
-            renderProducts(); 
-            closeModal('lang-modal');
-        }
-
-        function handleAdminLogin() {
-            const username = document.getElementById('admin-username').value;
-            const password = document.getElementById('admin-password').value;
-            // NOTE: This is a placeholder for demonstration. NEVER store credentials in front-end code.
-            if (username === 'mmhanas14@gmail.com' && password === 'ANas@2011') {
-                closeModal('admin-login-modal');
-                // Using console.log instead of alert as per general best practice
-                console.log("Admin Logged In successfully! (Admin Panel functionality is a placeholder)");
-            } else {
-                // Using console.error instead of alert as per general best practice
-                console.error(T('wrong_credentials')); 
-            }
-        }
-
-        function setupEventListeners() {
-            document.getElementById('menu-button').addEventListener('click', () => {
-                document.getElementById('dropdown-menu').classList.toggle('hidden');
-            });
-            
-            document.addEventListener('click', (e) => {
-                const menu = document.getElementById('dropdown-menu');
-                const button = document.getElementById('menu-button');
-                if (menu && button && !menu.contains(e.target) && !button.contains(e.target)) {
-                    menu.classList.add('hidden');
-                }
-            });
-
-            document.getElementById('send-button').addEventListener('click', () => handleSendGemini());
-            document.getElementById('chat-input').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') handleSendGemini();
-            });
-        }
-
-        function createMenuItems() {
-            const menuData = [
-                { id: 'home', icon: 'home', labelKey: 'home', action: () => renderPage('home') },
-                { id: 'seller-info', icon: 'store', labelKey: 'seller_info', action: () => renderPage('seller-info') },
-                { id: 'ask-gemini', icon: 'message-square', labelKey: 'ask_gemini', action: () => renderPage('ask-gemini') },
-                { id: 'lang-change', icon: 'globe', labelKey: 'change_language', action: () => openModal('lang-modal') },
-                { id: 'about', icon: 'info', labelKey: 'about', action: () => renderPage('about') },
-            ];
-            const menu = document.getElementById('dropdown-menu');
-            
-            menu.innerHTML = menuData.map(item => `
-                <div 
-                    onclick="event.stopPropagation(); ${item.action.toString().replace('() => ', '')}"
-                    class="flex items-center p-3 cursor-pointer text-gray-700 hover:bg-indigo-50 transition duration-150"
-                >
-                    <i data-lucide="${item.icon}" class="w-5 h-5 mr-3 text-indigo-600"></i>
-                    <span data-i18n="${item.labelKey}">${T(item.labelKey)}</span>
-                </div>
-            `).join('');
-
-            menu.innerHTML += `
-                <div class='border-t my-1'></div>
-                <div
-                    onclick="event.stopPropagation(); openModal('admin-login-modal'); document.getElementById('dropdown-menu').classList.add('hidden');"
-                    class="flex items-center p-3 cursor-pointer text-gray-700 hover:bg-indigo-50 transition duration-150"
-                >
-                    <i data-lucide="shield" class="w-5 h-5 mr-3 text-indigo-600"></i>
-                    <span data-i18n="admin_login">${T('admin_login')}</span>
-                </div>
-            `;
-            
-            lucide.createIcons();
-        }
-
-        // --- MAIN INIT ---
-        window.onload = function() {
-            setupEventListeners();
-            applyTranslations(); 
-            renderProducts();
-            renderPage('home');
-            lucide.createIcons();
-        };
-
-    </script>
+    <!-- Link to your external JavaScript file -->
+    <script src="script.js" defer></script>
 </body>
-</html>
-
+            </html>
