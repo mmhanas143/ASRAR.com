@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASRAR CLOTHES - Enhanced UI</title>
+    <title>ASRAR CLOTHES - Modular Architecture</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Load Lucide Icons -->
@@ -95,7 +95,7 @@
                         <div onclick="window.renderPage('chat'); window.closeModal('dropdown-menu')" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 cursor-pointer transition duration-150">
                             <i data-lucide="sparkles" class="w-5 h-5 mr-3 text-indigo-600"></i><span data-lang-key="fashion_advisor_menu">✨ ফ্যাশন উপদেষ্টা</span>
                         </div>
-                        <div onclick="window.openModal('product-modal'); window.closeModal('dropdown-menu')" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 cursor-pointer transition duration-150" id="add-product-menu">
+                        <div onclick="window.openProductModal()" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 cursor-pointer transition duration-150" id="add-product-menu">
                             <i data-lucide="plus-circle" class="w-5 h-5 mr-3 text-indigo-600"></i><span data-lang-key="add_product">পণ্য যোগ করুন</span>
                         </div>
                         <div id="admin-login-menu" class="px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 cursor-pointer rounded-b-xl transition duration-150 border-t border-gray-100">
@@ -186,7 +186,7 @@
                     <textarea id="product-description" name="description" rows="3" required class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3.5 text-base"></textarea>
                     
                     <!-- Feature 1: Product Description Enhancer (Admin Only) -->
-                    <button id="enhance-description-btn" type="button" onclick="window.enhanceProductDescription()" class="w-full mt-3 flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-xl shadow-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 transform hover:scale-[1.01]">
+                    <button id="enhance-description-btn" type="button" onclick="window.enhanceProductDescriptionHandler()" class="w-full mt-3 flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-xl shadow-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 transform hover:scale-[1.01]">
                         <i data-lucide="sparkles" class="w-5 h-5 mr-2"></i> <span data-lang-key="enhance_description_btn">✨ বিবরণ তৈরি করুন (এআই)</span>
                     </button>
                 </div>
@@ -206,9 +206,9 @@
         </div>
     </div>
     
-    <!-- Load Firebase Service first -->
+    <!-- Load JS Modules -->
     <script type="module" src="firebase_service.js"></script>
-    <!-- Load App Logic, which depends on Firebase Service -->
+    <script type="module" src="gemini_api.js"></script>
     <script type="module" src="app_logic.js"></script>
 </body>
 </html>
