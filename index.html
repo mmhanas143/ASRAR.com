@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASRAR CLOTHES</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header and Navigation (No changes) -->
+    <header>
+        <nav>
+            <div class="logo">ASRAR CLOTHES</div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-item active" data-page="home">Home</a></li>
+                <li><a href="#" class="nav-item" data-page="seller-info">Seller Info</a></li>
+                <li><a href="#" class="nav-item" data-page="ask-gemini">Ask Gemini</a></li>
+                <li><a href="#" id="change-language">Change Language</a></li>
+                <li><a href="#" class="nav-item" data-page="about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Page (No changes) -->
+        <section id="home-page" class="page active">
+            <div class="search-container">
+                <input type="text" id="search-bar" placeholder="Search for products...">
+            </div>
+            <div id="product-grid" class="product-grid-container"></div>
+        </section>
+
+        <!-- Product Detail Page (Button Added) -->
+        <section id="product-detail-page" class="page">
+            <div class="detail-container">
+                <div class="detail-left">
+                    <img id="detail-img" src="" alt="Product Image">
+                </div>
+                <div class="detail-right">
+                    <h1 id="detail-name"></h1>
+                    <p class="detail-price" id="detail-price"></p>
+                    <p class="detail-description" id="detail-description"></p>
+                    <div class="detail-actions">
+                        <button id="detail-buy-now-btn" class="action-btn buy-btn">Buy Now</button>
+                        <button id="detail-ask-gemini-btn" class="action-btn ask-btn">Ask Gemini</button>
+                    </div>
+                    <!-- NEW AI TRY-ON BUTTON -->
+                    <button id="detail-tryon-ai-btn" class="action-btn tryon-btn">
+                        ✨ Try On with AI
+                    </button>
+                    <button id="back-to-shop-btn">&larr; Back to Shop</button>
+                </div>
+            </div>
+            <div class="related-products">
+                <h2>Other Products You Might Like</h2>
+                <div id="other-products-grid" class="product-grid-container"></div>
+            </div>
+        </section>
+
+        <!-- Other pages (No changes) -->
+        <section id="seller-info-page" class="page"></section>
+        <section id="ask-gemini-page" class="page"></section>
+        <section id="about-page" class="page"></section>
+    </main>
+
+    <!-- Buy Now Modal (No changes) -->
+    <div id="buy-now-modal" class="modal"></div>
+
+    <!-- NEW: Virtual Try-On Modal -->
+    <div id="virtual-tryon-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Virtual Try-On with Gemini AI</h2>
+            <p>Upload a full-body picture of yourself for the best results.</p>
+            
+            <div class="tryon-interface">
+                <div class="tryon-upload">
+                    <label for="user-image-upload">Upload Your Photo:</label>
+                    <input type="file" id="user-image-upload" accept="image/*">
+                    <img id="user-image-preview" src="images/placeholder-person.png" alt="Your uploaded image">
+                </div>
+                
+                <div class="tryon-product">
+                    <p>Product:</p>
+                    <img id="tryon-product-image" src="" alt="Product to try on">
+                </div>
+            </div>
+
+            <button id="generate-tryon-image-btn">Generate Image</button>
+
+            <div id="tryon-result-container">
+                <h3>Your AI-Generated Image:</h3>
+                <div id="tryon-loading" class="loader" style="display: none;"></div>
+                <img id="tryon-result-image" src="" alt="AI Generated Try-On Image" style="display: none;">
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
