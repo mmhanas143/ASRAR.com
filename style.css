@@ -1,0 +1,98 @@
+/* --- Add this to your existing style.css file --- */
+
+/* Action Buttons on Detail Page */
+.detail-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.action-btn {
+    padding: 1rem;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.buy-btn { background-color: var(--primary-color); color: var(--light-text-color); }
+.ask-btn { background-color: #eee; color: var(--text-color); }
+
+/* NEW: AI Try-On Button Style */
+.tryon-btn {
+    width: 100%;
+    margin-bottom: 2rem;
+    background: linear-gradient(45deg, #ff4500, #ff8c00);
+    color: white;
+    font-size: 1.2rem;
+    border: none;
+}
+.tryon-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4);
+}
+
+/* --- NEW: Virtual Try-On Modal Styling --- */
+.tryon-interface {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+.tryon-upload, .tryon-product {
+    width: 45%;
+}
+.tryon-interface img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+}
+#user-image-upload {
+    margin-top: 0.5rem;
+    width: 100%;
+}
+#generate-tryon-image-btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+#tryon-result-container {
+    margin-top: 1rem;
+    text-align: center;
+}
+#tryon-result-image {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 10px;
+    margin-top: 1rem;
+    border: 1px solid #ddd;
+}
+
+/* Loader Animation */
+.loader {
+    border: 8px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 8px solid var(--accent-color);
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
