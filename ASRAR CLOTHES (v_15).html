@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASRAR CLOTHES - Final Premium Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+    <style>
+        /* --- Base Styles --- */
+        :root {
+            /* Light Mode */
+            --bg-color: #f0f2f5; --surface-color: #ffffff; --primary-color: #0d6efd; --on-primary-color: #ffffff;
+            --secondary-color: #6c757d; --on-secondary-color: #ffffff; --text-color: #212529; --outline-color: #dee2e6;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08); --border-radius: 20px;
+        }
+        
+        body.dark-mode {
+            --bg-color: #1c1c1e; --surface-color: #2c2c2e; --primary-color: #4da6ff; --on-primary-color: #000000;
+            --secondary-color: #8e8e93; --on-secondary-color: #ffffff; --text-color: #f2f2f7; --outline-color: #4a4a4d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; transition: background-color 0.3s ease, color 0.3s ease; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0a58ca; }
+        body.dark-mode ::-webkit-scrollbar-thumb { background: var(--primary-color); }
+        body.dark-mode ::-webkit-scrollbar-thumb:hover { background: #3c91e6; }
+
+        /* --- Header & Navigation --- */
+        header { background-color: var(--surface-color); padding: 1rem 5%; position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow); }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: 700; z-index: 1002; letter-spacing: 1px; color: var(--primary-color); }
+        .nav-links { list-style: none; display: flex; align-items: center; }
+        .nav-links li a { color: var(--text-color); text-decoration: none; padding: 0.5rem 1rem; margin: 0 0.5rem; transition: all 0.3s ease; border-radius: 50px; font-weight: 500; }
+        .nav-links li a:hover { background-color: rgba(0,0,0,0.05); }
+        .nav-links li a.active { background-color: var(--primary-color); color: var(--on-primary-color); }
+        .hamburger { display: none; cursor: pointer; z-index: 1002; }
+        .hamburger div { width: 25px; height: 3px; background-color: var(--text-color); margin: 5px; transition: all 0.3s ease; border-radius: 2px; }
+
+        /* --- Page Layout --- */
+        .page { display: none; padding: 3rem 5%; animation: fadeIn 0.7s ease-in-out; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .content-box { background: var(--surface-color); padding: 3rem; border-radius: var(--border-radius); box-shadow: var(--shadow); max-width: 900px; margin: auto; }
+        .content-box h1 { margin-bottom: 1.5rem; } .content-box h3 { margin-top: 2rem; margin-bottom: 1rem; color: var(--primary-color); }
+        .content-box p, .content-box li { line-height: 1.8; margin-bottom: 1rem; } .content-box ul { list-style-position: inside; padding-left: 1rem; }
+        .content-box a { color: var(--primary-color); text-decoration: none; font-weight: 600; } .content-box a:hover { text-decoration: underline; }
+
+        /* --- Form Elements --- */
+        input, textarea { width: 100%; padding: 1rem 1.5rem; font-size: 1rem; border: 1px solid var(--outline-color); border-radius: 1rem; transition: all 0.3s ease; font-family: 'Poppins', sans-serif; background-color: var(--surface-color); color: var(--text-color); }
+        input:focus, textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25); }
+        #search-bar { border-radius: 50px; text-align: center; margin-bottom: 2rem; }
+        .form-group { position: relative; margin-bottom: 1.5rem; }
+        .form-group input { padding-left: 3rem; }
+        .form-group i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--secondary-color); font-size: 1.1rem; }
+
+        /* --- Product Grid --- */
+        .product-grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 2.5rem; }
+        .product-card { background: var(--surface-color); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.4s ease; cursor: pointer; }
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 28px rgba(0,0,0,0.12); }
+        .product-image { width: 100%; height: 320px; object-fit: cover; }
+        .product-info { padding: 1.5rem; text-align: center; }
+        .product-info h3 { font-size: 1.4rem; color: var(--text-color); margin-bottom: 0.5rem; }
+        .product-info .price { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); }
+
+        /* --- Product Detail Page --- */
+        .detail-container { background: var(--surface-color); padding: 3rem; border-radius: var(--border-radius); box-shadow: var(--shadow); display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; }
+        .detail-left { display: flex; flex-direction: column; gap: 1rem; }
+        .detail-main-image { width: 100%; height: 450px; object-fit: cover; border-radius: var(--border-radius); }
+        .detail-thumbnail-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+        .detail-thumbnail { width: 100%; height: 80px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition: all 0.3s ease; }
+        .detail-thumbnail.selected { border-color: var(--primary-color); }
+
+        .detail-right h1 { font-size: 2.8rem; color: var(--text-color); margin-bottom: 0.5rem; }
+        .options-group { margin-bottom: 1.5rem; }
+        .options-group h3 { font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--text-color); }
+        .options-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+        .color-option, .size-option { padding: 0.6rem 1.2rem; border: 1px solid var(--outline-color); border-radius: 50px; cursor: pointer; transition: all 0.3s ease; font-weight: 500; background-color: var(--surface-color); color: var(--text-color); }
+        .color-option:hover, .size-option:hover { background-color: rgba(0,0,0,0.05); }
+        .color-option.selected, .size-option.selected { background-color: var(--primary-color); color: var(--on-primary-color); border-color: var(--primary-color); }
+        
+        .detail-actions { display: flex; gap: 1rem; margin-top: 2rem; }
+        .action-btn { display: flex; align-items: center; justify-content: center; gap: 0.75rem; padding: 1.1rem; font-size: 1.1rem; border-radius: 50px; cursor: pointer; border: none; font-weight: 600; transition: all 0.3s ease; letter-spacing: 0.5px; }
+        .buy-btn { background: var(--primary-color); color: var(--on-primary-color); }
+        .buy-btn:hover { background-color: #0a58ca; transform: translateY(-3px); box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3); }
+        .tryon-btn { background: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); }
+        .tryon-btn:hover { background: var(--primary-color); color: var(--on-primary-color); transform: translateY(-3px); box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3); }
+        .action-btn.back-btn { background: var(--outline-color); color: var(--text-color); }
+        .action-btn.back-btn:hover { background: var(--secondary-color); color: var(--on-secondary-color); transform: translateY(-3px); }
+
+        .related-products { margin-top: 5rem; }
+
+        /* --- Modals --- */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); animation: fadeIn 0.3s; overflow-y: auto; }
+        .modal-content { background: var(--surface-color); box-shadow: var(--shadow); margin: 5% auto; padding: 2.5rem; border-radius: var(--border-radius); width: 90%; max-width: 500px; position: relative; animation: slideIn 0.4s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
+        .modal.fade-out { animation: fadeOut 0.3s forwards; }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+        .close-button { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 2rem; font-weight: 300; cursor: pointer; color: var(--secondary-color); transition: color 0.3s ease; }
+        .close-button:hover { color: var(--text-color); }
+
+        /* --- Gemini Chat --- */
+        .gemini-chat-container { background: var(--surface-color); border-radius: var(--border-radius); box-shadow: var(--shadow); overflow: hidden; max-width: 800px; margin: auto; }
+        .chat-header { background-color: var(--surface-color); border-bottom: 1px solid var(--outline-color); padding: 1rem; text-align: center; color: var(--text-color); font-size: 1.2rem; font-weight: 600; }
+        .chat-box { height: 400px; padding: 1.5rem; display: flex; flex-direction: column; overflow-y: auto; background-color: var(--bg-color); }
+        .message-wrapper { display: flex; margin-bottom: 1rem; max-width: 85%; animation: fadeIn 0.5s ease; }
+        .message-wrapper.user { align-self: flex-end; }
+        .message-wrapper.gemini { align-self: flex-start; }
+        .message { padding: 0.8rem 1.2rem; border-radius: 20px; word-wrap: break-word; line-height: 1.6; }
+        .message-wrapper.user .message { background: var(--primary-color); color: var(--on-primary-color); border-bottom-right-radius: 5px; }
+        .message-wrapper.gemini .message { background: var(--outline-color); color: var(--text-color); border-bottom-left-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        body.dark-mode .message-wrapper.gemini .message { background: var(--surface-color); }
+
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary-color); color: var(--on-primary-color); display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 0.75rem; flex-shrink: 0; }
+        .chat-input-area { display: flex; padding: 1rem; background: var(--surface-color); border-top: 1px solid var(--outline-color); }
+        .chat-input { position: relative; width: 100%; }
+        #gemini-input { border-radius: 50px; padding-right: 60px; }
+        #gemini-send-btn { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: var(--primary-color); color: var(--on-primary-color); border: none; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; transition: all 0.3s ease; }
+        #gemini-send-btn:active { transform: translateY(-50%) scale(0.9); }
+        #gemini-send-btn:hover { background-color: #0a58ca; }
+
+        .typing-indicator { display: flex; align-items: center; }
+        .typing-indicator span { height: 8px; width: 8px; margin: 0 2px; background-color: #9E9E9E; display: block; border-radius: 50%; opacity: 0.4; animation: typing 1s infinite; }
+        .typing-indicator span:nth-of-type(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-of-type(3) { animation-delay: 0.4s; }
+        @keyframes typing { 0% { opacity: 0.4; } 20% { opacity: 1; } 100% { opacity: 0.4; } }
+        
+        /* --- AI Virtual Try-On Page --- */
+        .tryon-container { max-width: 800px; margin: auto; text-align: center; }
+        .tryon-container h2 { margin-bottom: 0.5rem; font-size: 2.2rem; }
+        .tryon-container p { margin-bottom: 1.5rem; color: var(--secondary-color); font-size: 1.1rem; }
+        .upload-area { border: 2px dashed var(--outline-color); border-radius: var(--border-radius); padding: 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; margin-bottom: 1.5rem; }
+        .upload-area:hover, .upload-area.dragover { border-color: var(--primary-color); background-color: rgba(13, 110, 253, 0.05); }
+        .upload-area i { font-size: 3rem; color: var(--secondary-color); margin-bottom: 0.75rem; }
+        .upload-area span { font-weight: 500; color: var(--text-color); }
+        #user-image-preview-container { margin-top: 1.5rem; border-radius: var(--border-radius); overflow: hidden; max-height: 300px; display: flex; justify-content: center; align-items: center; background-color: var(--bg-color); }
+        #user-image-preview { max-width: 100%; max-height: 100%; object-fit: contain; }
+        #tryon-result-container { margin-top: 2rem; padding: 1.5rem; border-radius: var(--border-radius); background-color: var(--bg-color); border: 1px solid var(--outline-color); text-align: left; min-height: 100px; display: flex; align-items: center; justify-content: center; }
+        #tryon-result-text { line-height: 1.8; color: var(--text-color); }
+
+        .loader { border: 5px solid var(--outline-color); border-top: 5px solid var(--primary-color); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* --- Admin Panel --- */
+        #admin-panel h1 { text-align: center; margin-bottom: 2rem; }
+        .admin-actions { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .admin-product-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .admin-product-card { background: var(--surface-color); border-radius: var(--border-radius); box-shadow: var(--shadow); padding: 1.5rem; text-align: center; position: relative; }
+        .admin-product-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 1rem; }
+        .admin-product-card h3 { font-size: 1.2rem; margin-bottom: 1rem; }
+        .admin-product-card .delete-btn { position: absolute; top: 1rem; right: 1rem; background-color: #e74c3c; color: white; border: none; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; transition: background-color 0.3s ease; }
+        .admin-product-card .delete-btn:hover { background-color: #c0392b; }
+
+        #add-product-form .form-section { background-color: var(--bg-color); padding: 2rem; border-radius: var(--border-radius); margin-bottom: 2rem; border: 1px solid var(--outline-color); }
+        #add-product-form h3 { margin-bottom: 1.5rem; color: var(--primary-color); }
+        #add-product-form .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        #add-product-form textarea { min-height: 100px; margin-bottom: 1rem; }
+        .image-upload-area { border: 2px dashed var(--outline-color); border-radius: 1rem; padding: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; margin-top: 1rem; margin-bottom: 1rem; }
+        .image-upload-area:hover { border-color: var(--primary-color); background-color: rgba(13, 110, 253, 0.05); }
+        .image-upload-area i { font-size: 1.8rem; color: var(--secondary-color); margin-right: 0.75rem; }
+        .image-upload-area span { font-weight: 500; color: var(--text-color); }
+        #image-preview-grid, #ai-image-preview { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .preview-image { width: 100%; height: 100px; object-fit: cover; border-radius: 10px; border: 1px solid var(--outline-color); }
+
+        /* --- Theme Switch --- */
+        .theme-switch-wrapper { display: flex; align-items: center; gap: 0.5rem; color: var(--text-color); cursor: pointer; margin-left: auto; padding: 0.5rem; user-select: none; }
+        .theme-switch { display: inline-block; height: 24px; position: relative; width: 48px; }
+        .theme-switch input { display:none; }
+        .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 24px; }
+        .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--primary-color); }
+        input:checked + .slider:before { transform: translateX(24px); }
+        body.dark-mode .nav-links .theme-switch-wrapper { color: white; }
+
+        /* --- Back to Top Button --- */
+        #go-up-btn { display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99; font-size: 1.5rem; background-color: var(--primary-color); color: var(--on-primary-color); cursor: pointer; padding: 0.8rem 1rem; border-radius: 50%; border: none; box-shadow: var(--shadow); transition: all 0.3s ease; }
+        #go-up-btn:hover { background-color: #0a58ca; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(13, 110, 253, 0.4); }
+
+        /* --- Responsive Design --- */
+        @media screen and (max-width: 768px) {
+            header { padding: 1rem 3%; }
+            .logo { font-size: 1.5rem; }
+            .nav-links { position: fixed; right: 0; top: 0; height: 100vh; background: rgba(247, 249, 252, 0.95); backdrop-filter: blur(15px); flex-direction: column; justify-content: center; width: 70%; transform: translateX(100%); transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1); gap: 2rem; z-index: 1001; box-shadow: -5px 0 15px rgba(0,0,0,0.1); }
+            body.dark-mode .nav-links { background: rgba(25, 28, 30, 0.95); }
+            .nav-links li a { color: var(--text-color); font-size: 1.2rem; }
+            .theme-switch-wrapper { margin-left: 0; margin-top: 2rem; } /* Center theme switcher in mobile menu */
+            body.dark-mode .nav-links li a { color: #e2e2f7; }
+            .hamburger { display: block; }
+            .nav-active { transform: translateX(0%); }
+            .toggle .line1 { transform: rotate(-45deg) translate(-5px, 6px); } .toggle .line2 { opacity: 0; } .toggle .line3 { transform: rotate(45deg) translate(-5px, -6px); }
+            body.dark-mode .toggle div { background-color: #fff; }
+            
+            .page { padding: 2rem 3%; }
+            .detail-container { grid-template-columns: 1fr; padding: 2rem; gap: 2rem; }
+            .detail-right h1 { font-size: 2rem; }
+            .detail-actions { flex-direction: column; }
+            .action-btn { width: 100%; }
+            #go-up-btn { bottom: 20px; right: 20px; padding: 0.6rem 0.8rem; font-size: 1.2rem; }
+            .modal-content { margin: 10% auto; padding: 1.5rem; }
+            #add-product-form .form-grid { grid-template-columns: 1fr; }
+        }
+
+        @media screen and (max-width: 480px) {
+            .product-grid-container { grid-template-columns: 1fr; }
+            .detail-main-image { height: 300px; }
+            .detail-thumbnail-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">ASRAR</div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-item active" data-page="home">Home</a></li>
+                <li><a href="#" class="nav-item" data-page="seller-info">Seller Info</a></li>
+                <li><a href="#" class="nav-item" data-page="ask-gemini">Ask Gemini</a></li>
+                <li><a href="#" class="nav-item" data-page="about">About</a></li>
+                <!-- Theme Switcher moved to the end for better mobile menu layout -->
+                <li class="theme-switch-wrapper">
+                    <i class="fas fa-moon"></i>
+                    <label class="theme-switch"><input type="checkbox" id="theme-toggle"><span class="slider"></span></label>
+                    <i class="fas fa-sun"></i>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <div class="line1"></div><div class="line2"></div><div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main> <!-- Content will be injected by JS --> </main>
+
+    <button id="go-up-btn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+
+    <script type="module">
+        import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // !!! SECURITY WARNING !!!
+            // DO NOT expose your API key in client-side code in a real application.
+            const API_KEY = "AIzaSyA8gx93qo54NQpXFry8SlcEGqhbdQ8gPVo"; 
+
+            const defaultProducts = [
+                { id: 1, name: 'Premium Black T-Shirt', images: ['https://images.pexels.com/photos/1232459/pexels-photo-1232459.jpeg?auto=compress&cs=tinysrgb&w=800', 'https://images.pexels.com/photos/1036856/pexels-photo-1036856.jpeg?auto=compress&cs=tinysrgb&w=800'], tryOnImage: 'https://images.pexels.com/photos/4066288/pexels-photo-4066288.jpeg?auto=compress&cs=tinysrgb&w=800', price: 850, description: 'A classic black t-shirt made from premium cotton. Perfect for everyday wear, offering exceptional comfort and durability. This versatile piece can be dressed up or down for any occasion.', sizes: ['S', 'M', 'L', 'XL'], colors: ['Black', 'White', 'Navy'] },
+                { id: 2, name: 'Stylish Denim Jacket', images: ['https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=800', 'https://images.pexels.com/photos/1036856/pexels-photo-1036856.jpeg?auto=compress&cs=tinysrgb&w=800'], tryOnImage: 'https://images.pexels.com/photos/6770020/pexels-photo-6770020.jpeg?auto=compress&cs=tinysrgb&w=800', price: 2200, description: 'A timeless blue denim jacket for all seasons. Featuring a comfortable fit and classic design, it’s a wardrobe essential. Layer it over a t-shirt or hoodie for a complete look.', sizes: ['M', 'L', 'XL'], colors: ['Blue', 'Black'] },
+                { id: 3, name: 'White Embroidered Panjabi', images: ['https://images.pexels.com/photos/1018911/pexels-photo-1018911.jpeg?auto=compress&cs=tinysrgb&w=800', 'https://i.ibb.co/6b0zY2Y/panjabi-white-clean.jpg'], tryOnImage: 'https://i.ibb.co/6b0zY2Y/panjabi-white-clean.jpg', price: 2500, description: 'Beautifully embroidered Panjabi for special events. Crafted with intricate details and premium fabric, it offers a blend of traditional elegance and modern comfort. Ideal for festivals and gatherings.', sizes: ['38', '40', '42', '44'], colors: ['White', 'Cream'] },
+                { id: 4, name: 'Olive Green Cargo Pants', images: ['https://images.pexels.com/photos/7763359/pexels-photo-7763359.jpeg?auto=compress&cs=tinysrgb&w=800', 'https://images.pexels.com/photos/7206287/pexels-photo-7206287.jpeg?auto=compress&cs=tinysrgb&w=800'], tryOnImage: 'https://images.pexels.com/photos/7206287/pexels-photo-7206287.jpeg?auto=compress&cs=tinysrgb&w=800', price: 1600, description: 'Modern cargo pants with a rugged look. These pants combine style with functionality, featuring multiple pockets and a durable fabric. Perfect for casual outings and outdoor adventures.', sizes: ['30', '32', '34', '36'], colors: ['Olive', 'Khaki', 'Black'] },
+                { id: 5, name: 'Comfort Cotton Hoodie', images: ['https://images.pexels.com/photos/6311652/pexels-photo-6311652.jpeg?auto=compress&cs=tinysrgb&w=800', 'https://images.pexels.com/photos/4056037/pexels-photo-4056037.jpeg?auto=compress&cs=tinysrgb&w=800'], tryOnImage: 'https://images.pexels.com/photos/4056037/pexels-photo-4056037.jpeg?auto=compress&cs=tinysrgb&w=800', price: 1800, description: 'An extremely comfortable hoodie for winter days. Made from soft cotton blend, it provides warmth and coziness. Features a relaxed fit and a practical hood for ultimate comfort.', sizes: ['S', 'M', 'L'], colors: ['Maroon', 'Gray', 'Black'] },
+                { id: 6, name: 'Formal Check Shirt', images: ['https://images.pexels.com/photos/3775603/pexels-photo-3775603.jpeg?auto=compress&cs=tinysrgb&w=800', 'https://images.pexels.com/photos/428328/pexels-photo-428328.jpeg?auto=compress&cs=tinysrgb&w=800'], tryOnImage: 'https://images.pexels.com/photos/428328/pexels-photo-428328.jpeg?auto=compress&cs=tinysrgb&w=800', price: 1250, description: 'A comfortable check shirt for the office. This shirt offers a smart and professional look with a soft fabric for all-day comfort. Available in various classic check patterns.', sizes: ['M', 'L', 'XL'], colors: ['Blue', 'Red', 'Green'] },
+            ];
+            
+            let products = [];
+            const WHATSAPP_NUMBER = '+8801924445908'; 
+            let currentProduct = null, versionClickCount = 0;
+            const genAI = new GoogleGenerativeAI(API_KEY);
+            let geminiChatModel = null;
+
+            const allElements = {};
+
+            function initApp() {
+                // Inject main content dynamically
+                const mainContent = `
+                    <section id="home" class="page active"><div class="search-container"><input type="text" id="search-bar" placeholder="Search for stylish products..."></div><div id="product-grid" class="product-grid-container"></div></section>
+                    <section id="product-detail" class="page">
+                        <div class="detail-container">
+                            <div class="detail-left">
+                                <img id="detail-main-img" src="" alt="Product Main Image" class="detail-main-image">
+                                <div id="detail-thumbnail-grid" class="detail-thumbnail-grid"></div>
+                            </div>
+                            <div class="detail-right">
+                                <h1 id="detail-name"></h1>
+                                <p id="detail-price" style="font-size: 2.5rem; color: var(--primary-color); font-weight: 700; margin-bottom: 1rem;"></p>
+                                <p id="detail-description" style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;"></p>
+                                <div class="options-container">
+                                    <div class="options-group"><h3>Colors</h3><div class="options-buttons colors-options"></div></div>
+                                    <div class="options-group"><h3>Sizes</h3><div class="options-buttons sizes-options"></div></div>
+                                </div>
+                                <div class="actions-container">
+                                    <div class="detail-actions">
+                                        <button id="detail-buy-now-btn" class="action-btn buy-btn"><i class="fas fa-shopping-cart"></i><span>Buy Now</span></button>
+                                        <button id="detail-ask-gemini-btn" class="action-btn tryon-btn"><i class="fas fa-comment-dots"></i><span>Ask Gemini</span></button>
+                                    </div>
+                                    <button id="detail-tryon-ai-btn" class="action-btn tryon-btn" style="margin-top: 1rem;"><i class="fas fa-magic-wand-sparkles"></i><span>AI Virtual Try-On</span></button>
+                                </div>
+                                <button id="back-to-shop-btn" class="action-btn back-btn" style="color:var(--text-color); margin-top:1rem;">&larr; Back to Shop</button>
+                            </div>
+                        </div>
+                        <div class="related-products">
+                            <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2.2rem; font-weight: 600; color: var(--text-color);">Other Products</h2>
+                            <div id="other-products-grid" class="product-grid-container"></div>
+                        </div>
+                    </section>
+                    <section id="seller-info" class="page">
+                        <div class="content-box">
+                            <h1>About ASRAR Clothes</h1>
+                            <p><strong>ASRAR Clothes</strong> is not just a brand; it's a statement of style, quality, and trust. We are dedicated to bringing you the latest trends in fashion, crafted from high-quality materials that ensure comfort and longevity.</p>
+                            <h3>Our Mission</h3>
+                            <p>Our mission is to empower individuals to express their unique identity through fashion. We believe that what you wear is a reflection of who you are, and we are here to provide you with the best options to showcase your personality with confidence.</p>
+                            <h3>Why Choose Us?</h3>
+                            <ul>
+                                <li><strong>Premium Quality:</strong> We source the finest fabrics and materials to create garments that are not only stylish but also durable and comfortable.</li>
+                                <li><strong>Modern Designs:</strong> Our design team stays ahead of the curve, bringing you contemporary styles that fit seamlessly into your lifestyle.</li>
+                                <li><strong>Customer Satisfaction:</strong> Your happiness is our top priority. We are committed to providing an exceptional shopping experience, from browsing our collection to receiving your order.</li>
+                            </ul>
+                            <h3>Get in Touch</h3>
+                            <p>
+                                <strong>Email:</strong> <a href="mailto:support@asrarclothes.com">support@asrarclothes.com</a><br>
+                                <strong>Phone/WhatsApp:</strong> <a href="https://wa.me/${WHATSAPP_NUMBER}">${WHATSAPP_NUMBER}</a><br>
+                                <strong>Facebook:</strong> <a href="https://facebook.com/your-page-url" target="_blank">facebook.com/AsrarClothesOfficial</a>
+                            </p>
+                        </div>
+                    </section>
+                    <section id="ask-gemini" class="page">
+                        <div class="gemini-chat-container">
+                            <div class="chat-header">Ask Gemini AI</div>
+                            <div class="chat-box" id="chat-box">
+                                <div class="message-wrapper gemini">
+                                    <div class="avatar"><i class="fas fa-robot"></i></div>
+                                    <div class="message">Hello! How can I help you today?</div>
+                                </div>
+                            </div>
+                            <div class="chat-input-area">
+                                <div class="chat-input">
+                                    <input type="text" id="gemini-input" placeholder="Type your question...">
+                                    <button id="gemini-send-btn"><i class="fas fa-paper-plane"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="about" class="page">
+                        <div class="content-box">
+                            <h1>About This Project</h1>
+                            <p>This modern e-commerce platform was brought to life by the skill and dedication of its developer. It integrates cutting-edge AI features to create a seamless and futuristic shopping experience.</p>
+                            <h3>Design & Development</h3>
+                            <p>This project was designed and developed by <strong>MMH ANAS</strong>, a passionate and innovative web developer dedicated to building high-quality, user-centric web applications. With a strong expertise in modern front-end technologies like HTML, CSS, and JavaScript, Anas focuses on creating intuitive interfaces and robust functionalities.</p>
+                            <p>His goal for this project was to blend a clean, responsive design with powerful features like an AI-powered virtual try-on and a helpful Gemini chatbot, demonstrating the future of online retail.</p>
+                            <p><strong>Contact the Developer:</strong> <a href="mailto:mmhanas14@gmail.com">mmhanas14@gmail.com</a></p>
+                            <hr style="margin: 2rem 0; border: 1px solid var(--outline-color);">
+                            <p><strong>Build:</strong> MKD_17-D_OCT-M_2025-Y</p>
+                            <p><strong>Version:</strong> <span id="version-number">9.2.0</span> (UI/UX Enhancements)</p>
+                        </div>
+                    </section>
+                    <section id="admin-panel" class="page">
+                        <h1>Admin Panel</h1>
+                        <div class="admin-actions">
+                            <button id="show-add-product-modal-btn" class="action-btn buy-btn"><i class="fas fa-plus"></i> Add New Product</button>
+                            <button id="reset-products-btn" class="action-btn tryon-btn" style="color: #e74c3c; border-color: #e74c3c;"><i class="fas fa-sync"></i> Reset to Default</button>
+                        </div>
+                        <div id="admin-product-list" class="admin-product-list"></div>
+                    </section>
+                    <!-- NEW: Virtual Try-On Page -->
+                    <section id="virtual-tryon-page" class="page">
+                        <div class="tryon-container">
+                            <h2>AI Virtual Try-On</h2>
+                            <p>Upload your photo to see how this product might look on you and get personalized fashion advice.</p>
+                            <label for="user-image-upload" id="upload-area" class="upload-area">
+                                <i class="fas fa-cloud-upload-alt"></i><span>Click to Upload or Drag & Drop</span>
+                            </label>
+                            <input type="file" id="user-image-upload" accept="image/*" style="display:none;">
+                            <div id="user-image-preview-container" style="display:none; margin-top:1rem;">
+                                <img id="user-image-preview" src="#">
+                            </div>
+                            <div id="tryon-result-container">
+                                <div id="tryon-loading" class="loader" style="display:none; margin: 2rem auto;"></div>
+                                <div id="tryon-result-text" style="display:none;"></div>
+                            </div>
+                            <button id="back-to-product-btn" class="action-btn back-btn" style="color:var(--text-color); margin-top:2rem; width:auto; padding: 1.1rem 2rem;">&larr; Back to Product</button>
+                        </div>
+                    </section>
+                `;
+                document.querySelector('main').innerHTML = mainContent;
+
+                // Inject modals dynamically
+                const modalContent = `
+                    <div id="buy-now-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div style="text-align:center; margin-bottom:2rem;">
+                                <h2 id="modal-product-name"></h2>
+                                <h3 id="modal-product-price"></h3>
+                            </div>
+                            <form id="order-form">
+                                <div class="form-group"><i class="fas fa-user"></i><input type="text" id="customer-name" placeholder="Your Name" required></div>
+                                <div class="form-group"><i class="fas fa-map-marker-alt"></i><input type="text" id="customer-address" placeholder="Your Full Address" required></div>
+                                <div class="form-group"><i class="fas fa-phone"></i><input type="tel" id="customer-phone" placeholder="Your Phone Number" required></div>
+                                <div class="form-group"><i class="fas fa-envelope"></i><input type="email" id="customer-email" placeholder="Your Email (Optional)"></div>
+                                <button type="submit" class="action-btn buy-btn" style="background-color: #25D366; color: white; width:100%"><i class="fab fa-whatsapp"></i>Order on WhatsApp</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="admin-login-modal" class="modal">
+                        <div class="modal-content">
+                            <h2>Developer Access</h2>
+                            <form id="admin-login-form">
+                                <div class="form-group"><i class="fas fa-user"></i><input type="text" id="admin-username" placeholder="Username" required></div>
+                                <div class="form-group"><i class="fas fa-lock"></i><input type="password" id="admin-password" placeholder="Password" required></div>
+                                <button type="submit" class="action-btn buy-btn" style="width:100%;">Login</button>
+                            </form>
+                            <span class="close-button">&times;</span>
+                        </div>
+                    </div>
+                    <div id="add-product-modal" class="modal">
+                        <div class="modal-content" style="max-width:800px;">
+                            <span class="close-button">&times;</span>
+                            <form id="add-product-form">
+                                <div class="form-section">
+                                    <h3>Product Details</h3>
+                                    <div class="form-grid">
+                                        <input type="text" id="new-product-name" placeholder="Product Name" required>
+                                        <input type="number" id="new-product-price" placeholder="Price (TK)" required>
+                                    </div>
+                                    <textarea id="new-product-desc" placeholder="Product Description" required></textarea>
+                                    <div class="form-grid">
+                                        <input type="text" id="new-product-sizes" placeholder="Sizes (comma-separated, e.g., S,M,L)">
+                                        <input type="text" id="new-product-colors" placeholder="Colors (comma-separated, e.g., Red,Blue)">
+                                    </div>
+                                </div>
+                                <div class="form-section">
+                                    <h3>Product Images (Main Display)</h3>
+                                    <p>Upload the main images for the product detail page (up to 5 recommended).</p>
+                                    <label for="new-product-images" class="image-upload-area"><span><i class="fas fa-images"></i> Select Product Images</span></label>
+                                    <input type="file" id="new-product-images" accept="image/*" multiple style="display:none;">
+                                    <div id="image-preview-grid"></div>
+                                </div>
+                                <div class="form-section">
+                                    <h3>AI Try-On Image (Clean Background)</h3>
+                                    <p>Upload ONE clean image of the product for AI Try-On. This should ideally be on a neutral background.</p>
+                                    <label for="new-product-ai-image" class="image-upload-area"><span><i class="fas fa-robot"></i> Select AI Try-On Image</span></label>
+                                    <input type="file" id="new-product-ai-image" accept="image/*" style="display:none;">
+                                    <div id="ai-image-preview"></div>
+                                </div>
+                                <button type="submit" class="action-btn buy-btn" style="width:100%;"><i class="fas fa-save"></i> Save Product</button>
+                            </form>
+                        </div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', modalContent);
+
+                // Collect all necessary elements once
+                Object.assign(allElements, { 
+                    navLinks: document.querySelector('.nav-links'), 
+                    hamburger: document.querySelector('.hamburger'), 
+                    allNavItems: document.querySelectorAll('.nav-item'), 
+                    pages: document.querySelectorAll('.page'), 
+                    productGrid: document.getElementById('product-grid'), 
+                    searchBar: document.getElementById('search-bar'), 
+                    uploadArea: document.getElementById('upload-area'), 
+                    userImageUpload: document.getElementById('user-image-upload'), 
+                    userImagePreviewContainer: document.getElementById('user-image-preview-container'), 
+                    userImagePreview: document.getElementById('user-image-preview'), 
+                    tryOnLoading: document.getElementById('tryon-loading'), 
+                    tryOnResultText: document.getElementById('tryon-result-text'), 
+                    geminiInput: document.getElementById('gemini-input'), 
+                    chatBox: document.getElementById('chat-box'), 
+                    adminProductList: document.getElementById('admin-product-list'), 
+                    themeToggle: document.getElementById('theme-toggle'),
+                    goUpBtn: document.getElementById('go-up-btn'),
+                    detailMainImg: document.getElementById('detail-main-img'),
+                    detailThumbnailGrid: document.getElementById('detail-thumbnail-grid')
+                });
+                
+                geminiChatModel = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+                setupEventListeners();
+                loadProducts();
+                applyTheme(localStorage.getItem('theme') || 'light');
+            }
+            
+            const loadProducts = () => { 
+                const storedProducts = localStorage.getItem('asrar_products'); 
+                products = storedProducts ? JSON.parse(storedProducts) : JSON.parse(JSON.stringify(defaultProducts)); 
+                displayProducts(products, allElements.productGrid); 
+            };
+
+            const saveProducts = () => localStorage.setItem('asrar_products', JSON.stringify(products));
+            
+            const displayProducts = (productsToDisplay, container) => { 
+                container.innerHTML = ''; 
+                if (productsToDisplay.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; font-size: 1.2rem; color: var(--secondary-color);">No products found.</p>';
+                    return;
+                }
+                productsToDisplay.forEach(product => { 
+                    const productCard = document.createElement('div'); 
+                    productCard.className = 'product-card'; 
+                    productCard.dataset.id = product.id; 
+                    productCard.innerHTML = `
+                        <img src="${product.images[0]}" alt="${product.name}" class="product-image">
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p class="price">TK ${product.price}</p>
+                        </div>
+                    `; 
+                    productCard.addEventListener('click', () => showProductDetail(product.id)); 
+                    container.appendChild(productCard); 
+                }); 
+            };
+
+            const showProductDetail = (productId) => { 
+                const product = products.find(p => p.id == productId); 
+                if (!product) return; 
+                currentProduct = product; 
+
+                allElements.detailMainImg.src = product.images[0]; 
+                allElements.detailMainImg.alt = product.name;
+
+                allElements.detailThumbnailGrid.innerHTML = '';
+                product.images.forEach((imgSrc, index) => {
+                    const thumb = document.createElement('img');
+                    thumb.src = imgSrc;
+                    thumb.alt = `${product.name} thumbnail ${index + 1}`;
+                    thumb.className = 'detail-thumbnail';
+                    if (index === 0) thumb.classList.add('selected');
+                    thumb.addEventListener('click', () => {
+                        allElements.detailMainImg.src = imgSrc;
+                        document.querySelectorAll('.detail-thumbnail').forEach(t => t.classList.remove('selected'));
+                        thumb.classList.add('selected');
+                    });
+                    allElements.detailThumbnailGrid.appendChild(thumb);
+                });
+
+                document.getElementById('detail-name').textContent = product.name; 
+                document.getElementById('detail-price').textContent = `TK ${product.price}`; 
+                document.getElementById('detail-description').textContent = product.description; 
+                
+                const colorsContainer = document.querySelector('.colors-options'); 
+                const sizesContainer = document.querySelector('.sizes-options'); 
+                colorsContainer.innerHTML = ''; 
+                sizesContainer.innerHTML = ''; 
+                
+                product.colors?.forEach(color => { 
+                    const btn = document.createElement('button'); 
+                    btn.className = 'color-option'; 
+                    btn.textContent = color; 
+                    btn.addEventListener('click', (e) => { 
+                        document.querySelectorAll('.color-option').forEach(b => b.classList.remove('selected')); 
+                        e.currentTarget.classList.add('selected'); 
+                    }); 
+                    colorsContainer.appendChild(btn); 
+                }); 
+                
+                product.sizes?.forEach(size => { 
+                    const btn = document.createElement('button'); 
+                    btn.className = 'size-option'; 
+                    btn.textContent = size; 
+                    btn.addEventListener('click', (e) => { 
+                        document.querySelectorAll('.size-option').forEach(b => b.classList.remove('selected')); 
+                        e.currentTarget.classList.add('selected'); 
+                    }); 
+                    sizesContainer.appendChild(btn); 
+                }); 
+
+                if (product.colors && product.colors.length > 0) colorsContainer.querySelector('.color-option')?.classList.add('selected');
+                if (product.sizes && product.sizes.length > 0) sizesContainer.querySelector('.size-option')?.classList.add('selected');
+
+                const otherProducts = products.filter(p => p.id != productId); 
+                displayProducts(otherProducts, document.getElementById('other-products-grid')); 
+                showPage('product-detail'); 
+            };
+
+            const showPage = (pageId) => { 
+                allElements.pages.forEach(page => page.classList.remove('active')); 
+                document.getElementById(pageId)?.classList.add('active'); 
+                allElements.allNavItems.forEach(link => { 
+                    link.classList.remove('active'); 
+                    if (link.dataset.page === pageId) link.classList.add('active'); 
+                }); 
+                // Special case: No nav item for product detail or try-on, keep 'Home' active
+                if (pageId === 'product-detail' || pageId === 'virtual-tryon-page') {
+                    document.querySelector('.nav-item[data-page="home"]').classList.add('active');
+                }
+                window.scrollTo(0, 0); 
+                closeMobileNav(); 
+            };
+
+            const closeMobileNav = () => { 
+                if (allElements.navLinks.classList.contains('nav-active')) { 
+                    allElements.navLinks.classList.remove('nav-active'); 
+                    allElements.hamburger.classList.remove('toggle'); 
+                } 
+            };
+            
+            const askGemini = async () => {
+                const userMessage = allElements.geminiInput.value.trim();
+                if (userMessage === '') return;
+                appendMessage(userMessage, 'user');
+                allElements.geminiInput.value = '';
+                appendMessage('...', 'gemini', true);
+                try {
+                    const result = await geminiChatModel.generateContent(userMessage);
+                    const text = await result.response.text();
+                    document.querySelector('.typing-indicator-wrapper')?.remove();
+                    appendMessage(text, 'gemini');
+                } catch (error) {
+                    console.error("Gemini Error:", error);
+                    document.querySelector('.typing-indicator-wrapper')?.remove();
+                    appendMessage("Sorry, an error occurred. Please check your API Key and internet connection.", 'gemini');
+                }
+            };
+            
+            const appendMessage = (text, sender, isLoading = false) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = `message-wrapper ${sender}`;
+                
+                if(sender === 'gemini') {
+                    const avatar = document.createElement('div');
+                    avatar.className = 'avatar';
+                    avatar.innerHTML = '<i class="fas fa-robot"></i>';
+                    wrapper.appendChild(avatar);
+                }
+
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
+
+                if (isLoading) {
+                    wrapper.classList.add('typing-indicator-wrapper');
+                    messageDiv.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+                } else {
+                    messageDiv.textContent = text;
+                }
+                
+                wrapper.appendChild(messageDiv);
+                allElements.chatBox.appendChild(wrapper);
+                allElements.chatBox.scrollTop = allElements.chatBox.scrollHeight;
+            };
+
+            async function fileToGenerativePart(file) { 
+                const base64EncodedDataPromise = new Promise((resolve) => { 
+                    const reader = new FileReader(); 
+                    reader.onloadend = () => resolve(reader.result.split(',')[1]); 
+                    reader.readAsDataURL(file); 
+                }); 
+                return { inlineData: { data: await base64EncodedDataPromise, mimeType: file.type } }; 
+            }
+
+            const fileToBase64 = (file) => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = error => reject(error);
+                });
+            };
+
+            const applyTheme = (theme) => { 
+                if(theme === 'dark') { 
+                    document.body.classList.add('dark-mode'); 
+                    allElements.themeToggle.checked = true; 
+                } else { 
+                    document.body.classList.remove('dark-mode'); 
+                    allElements.themeToggle.checked = false; 
+                } 
+                localStorage.setItem('theme', theme); 
+            };
+
+            const showModal = (modalElement) => {
+                modalElement.classList.remove('fade-out');
+                modalElement.style.display = 'block';
+            };
+
+            const hideModal = (modalElement) => {
+                modalElement.classList.add('fade-out');
+                modalElement.addEventListener('animationend', function handler() {
+                    modalElement.style.display = 'none';
+                    modalElement.removeEventListener('animationend', handler);
+                });
+            };
+
+            function setupEventListeners() {
+                allElements.hamburger.addEventListener('click', () => { 
+                    allElements.navLinks.classList.toggle('nav-active'); 
+                    allElements.hamburger.classList.toggle('toggle'); 
+                });
+
+                allElements.searchBar.addEventListener('keyup', (e) => { 
+                    const searchTerm = e.target.value.toLowerCase();
+                    const filteredProducts = products.filter(p => p.name.toLowerCase().includes(searchTerm) || p.description.toLowerCase().includes(searchTerm)); 
+                    displayProducts(filteredProducts, allElements.productGrid); 
+                });
+
+                allElements.allNavItems.forEach(link => { 
+                    link.addEventListener('click', (e) => { 
+                        e.preventDefault(); 
+                        showPage(e.target.dataset.page); 
+                    }); 
+                });
+
+                document.getElementById('back-to-shop-btn').addEventListener('click', () => showPage('home'));
+                document.getElementById('detail-buy-now-btn').addEventListener('click', handleOrderClick);
+                document.getElementById('detail-ask-gemini-btn').addEventListener('click', () => { 
+                    showPage('ask-gemini'); 
+                    if (currentProduct) {
+                        allElements.geminiInput.value = `Tell me more about the "${currentProduct.name}" (price: TK ${currentProduct.price}).`;
+                    }
+                    allElements.geminiInput.focus();
+                });
+
+                // UPDATED: Try-On button now shows a page instead of a modal
+                document.getElementById('detail-tryon-ai-btn').addEventListener('click', () => { 
+                    showPage('virtual-tryon-page');
+                    allElements.tryOnResultText.style.display = 'none'; 
+                    allElements.userImageUpload.value = '';
+                    allElements.userImagePreviewContainer.style.display = 'none'; 
+                    allElements.tryOnLoading.style.display = 'none';
+                    allElements.uploadArea.classList.remove('dragover');
+                });
+                
+                // NEW: Event listener for the back button on the try-on page
+                document.getElementById('back-to-product-btn').addEventListener('click', () => showPage('product-detail'));
+
+                document.querySelectorAll('.close-button').forEach(btn => btn.addEventListener('click', (e) => hideModal(e.target.closest('.modal'))));
+                window.addEventListener('click', (e) => { 
+                    if (e.target.classList.contains('modal')) hideModal(e.target); 
+                });
+
+                document.getElementById('order-form').addEventListener('submit', handleOrderForm);
+                
+                document.getElementById('version-number').addEventListener('click', () => { 
+                    versionClickCount++; 
+                    if (versionClickCount === 7) { 
+                        versionClickCount = 0; 
+                        showModal(document.getElementById('admin-login-modal')); 
+                    } 
+                });
+                document.getElementById('admin-login-form').addEventListener('submit', (e) => { 
+                    e.preventDefault(); 
+                    if (document.getElementById('admin-username').value === 'mmhanas14@gmail.com' && document.getElementById('admin-password').value === 'ANas@2011') { 
+                        alert('Login Successful! Welcome, Admin.'); 
+                        hideModal(document.getElementById('admin-login-modal')); 
+                        showPage('admin-panel'); 
+                        renderAdminProducts(); 
+                    } else { 
+                        alert('Wrong username or password.'); 
+                    } 
+                });
+
+                document.getElementById('gemini-send-btn').addEventListener('click', askGemini);
+                allElements.geminiInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') askGemini(); });
+                
+                document.getElementById('show-add-product-modal-btn').addEventListener('click', () => {
+                    showModal(document.getElementById('add-product-modal'));
+                    document.getElementById('add-product-form').reset();
+                    document.getElementById('image-preview-grid').innerHTML = '';
+                    document.getElementById('ai-image-preview').innerHTML = '';
+                });
+
+                document.getElementById('reset-products-btn').addEventListener('click', () => { 
+                    if (confirm('Are you sure you want to reset all products to default? This action cannot be undone.')) { 
+                        products = JSON.parse(JSON.stringify(defaultProducts)); 
+                        saveProducts(); 
+                        renderAdminProducts(); 
+                        displayProducts(products, allElements.productGrid); 
+                        alert('Products reset to default successfully!');
+                    } 
+                });
+
+                document.getElementById('add-product-form').addEventListener('submit', handleAddProduct);
+                document.getElementById('new-product-images').addEventListener('change', handleImagePreviews);
+                document.getElementById('new-product-ai-image').addEventListener('change', handleAiImagePreview);
+                
+                const { uploadArea, userImageUpload } = allElements;
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => { 
+                    uploadArea.addEventListener(eventName, (e) => { e.preventDefault(); e.stopPropagation(); }, false); 
+                });
+                ['dragenter', 'dragover'].forEach(eventName => { 
+                    uploadArea.addEventListener(eventName, () => uploadArea.classList.add('dragover'), false); 
+                });
+                ['dragleave', 'drop'].forEach(eventName => { 
+                    uploadArea.addEventListener(eventName, () => uploadArea.classList.remove('dragover'), false); 
+                });
+                uploadArea.addEventListener('drop', (e) => handleFile(e.dataTransfer.files[0]), false);
+                userImageUpload.addEventListener('change', (e) => handleFile(e.target.files[0]));
+                
+                allElements.themeToggle.addEventListener('change', (e) => applyTheme(e.target.checked ? 'dark' : 'light'));
+
+                window.addEventListener('scroll', () => {
+                    allElements.goUpBtn.style.display = (window.scrollY > 300) ? 'block' : 'none';
+                });
+                allElements.goUpBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+            
+            const handleOrderClick = () => { 
+                const selectedSize = document.querySelector('.size-option.selected'); 
+                const selectedColor = document.querySelector('.color-option.selected'); 
+                
+                if (!selectedSize || !selectedColor) { 
+                    alert('Please select a size and color before proceeding.'); 
+                    return; 
+                } 
+                document.getElementById('modal-product-name').textContent = currentProduct.name; 
+                document.getElementById('modal-product-price').textContent = `Price: TK ${currentProduct.price}`; 
+                showModal(document.getElementById('buy-now-modal')); 
+            };
+
+            const handleOrderForm = (e) => { 
+                e.preventDefault(); 
+                const selectedSize = document.querySelector('.size-option.selected'); 
+                const selectedColor = document.querySelector('.color-option.selected'); 
+                
+                if (!selectedSize || !selectedColor) {
+                    alert('Error: Size or color not selected.');
+                    hideModal(document.getElementById('buy-now-modal'));
+                    return;
+                }
+
+                const name = document.getElementById('customer-name').value; 
+                const address = document.getElementById('customer-address').value; 
+                const phone = document.getElementById('customer-phone').value; 
+                const email = document.getElementById('customer-email').value; 
+                
+                let message = `Hello ASRAR CLOTHES, I would like to order:\n*Product:* ${currentProduct.name}\n*Price:* TK ${currentProduct.price}\n*Size:* ${selectedSize.textContent}\n*Color:* ${selectedColor.textContent}\n\n*My Details:*\n*Name:* ${name}\n*Address:* ${address}\n*Phone:* ${phone}`; 
+                if (email) message += `\n*Email:* ${email}`; 
+                
+                window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank'); 
+                e.target.reset(); 
+                hideModal(document.getElementById('buy-now-modal')); 
+            };
+
+            const handleFile = (file) => { 
+                if (file && file.type.startsWith('image/')) { 
+                    const reader = new FileReader(); 
+                    reader.onload = (event) => { 
+                        allElements.userImagePreview.src = event.target.result; 
+                        allElements.userImagePreviewContainer.style.display = 'block'; 
+                        runAIAssistant(file); 
+                    }; 
+                    reader.readAsDataURL(file); 
+                } else {
+                    alert('Please upload a valid image file.');
+                }
+            };
+
+            const runAIAssistant = async (userImageFile) => { 
+                allElements.tryOnLoading.style.display = 'block'; 
+                allElements.tryOnResultText.style.display = 'none'; 
+                allElements.tryOnResultText.textContent = '';
+                try { 
+                    const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" }); 
+                    const selectedColor = document.querySelector('.color-option.selected'); 
+                    const productName = currentProduct.name || "clothing item";
+                    const productColor = selectedColor ? selectedColor.textContent : 'a matching';
+
+                    const prompt = `You are 'Aether', an AI fashion stylist. A user has provided their photo and wants to know how the "${productName}" (specifically in ${productColor} color) would look on them. Analyze both the user's photo and the product image I'll provide. Give personalized, friendly, and encouraging fashion advice in English. 
+                    1. Start with a warm greeting.
+                    2. Explain how the item's style/color might complement the user's appearance.
+                    3. Suggest a complete outfit (what to pair it with).
+                    4. End with a positive remark. 
+                    Keep the response concise (100-150 words) and positive.`; 
+                    
+                    const userImagePart = await fileToGenerativePart(userImageFile); 
+                    
+                    const productResponse = await fetch(currentProduct.tryOnImage); 
+                    const productBlob = await productResponse.blob(); 
+                    const productImagePart = await fileToGenerativePart(new File([productBlob], "product.jpg", { type: productBlob.type })); 
+                    
+                    const result = await model.generateContent([prompt, userImagePart, productImagePart]); 
+                    const text = await result.response.text(); 
+                    allElements.tryOnResultText.textContent = text; 
+                } catch (error) { 
+                    console.error("AI Assistant Error:", error); 
+                    allElements.tryOnResultText.textContent = "Oops! My AI assistant ran into an issue. Please ensure your API key is correct and try again."; 
+                } finally { 
+                    allElements.tryOnLoading.style.display = 'none'; 
+                    allElements.tryOnResultText.style.display = 'block'; 
+                } 
+            };
+
+            const renderAdminProducts = () => { 
+                allElements.adminProductList.innerHTML = ''; 
+                if (products.length === 0) {
+                    allElements.adminProductList.innerHTML = '<p style="text-align: center; font-size: 1.2rem; color: var(--secondary-color);">No products in inventory. Add some!</p>';
+                    return;
+                }
+                products.forEach(product => { 
+                    const card = document.createElement('div'); 
+                    card.className = 'admin-product-card'; 
+                    card.innerHTML = `
+                        <img src="${product.images[0]}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p>TK ${product.price}</p>
+                        <button class="delete-btn" data-id="${product.id}" title="Delete Product"><i class="fas fa-trash"></i></button>
+                    `; 
+                    allElements.adminProductList.appendChild(card); 
+                }); 
+                document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', handleDeleteProduct)); 
+            };
+
+            const handleDeleteProduct = (e) => { 
+                const idToDelete = parseInt(e.currentTarget.dataset.id); 
+                if (confirm('Are you sure you want to delete this product permanently?')) { 
+                    products = products.filter(p => p.id != idToDelete); 
+                    saveProducts(); 
+                    renderAdminProducts(); 
+                    displayProducts(products, allElements.productGrid); 
+                    alert('Product deleted successfully!');
+                } 
+            };
+
+            const handleAddProduct = async (e) => { 
+                e.preventDefault(); 
+                
+                const newProductName = document.getElementById('new-product-name').value.trim();
+                const newProductPrice = parseFloat(document.getElementById('new-product-price').value);
+                const newProductDesc = document.getElementById('new-product-desc').value.trim();
+                const newProductSizes = document.getElementById('new-product-sizes').value.split(',').map(s => s.trim()).filter(Boolean);
+                const newProductColors = document.getElementById('new-product-colors').value.split(',').map(c => c.trim()).filter(Boolean);
+                const newProductImagesFiles = document.getElementById('new-product-images').files;
+                const newProductAiImageFile = document.getElementById('new-product-ai-image').files[0];
+
+                if (!newProductName || isNaN(newProductPrice) || !newProductDesc || newProductImagesFiles.length === 0 || !newProductAiImageFile) {
+                    alert('Please fill in all required fields and upload all necessary images.');
+                    return;
+                }
+
+                try {
+                    const imageBase64Promises = Array.from(newProductImagesFiles).map(file => fileToBase64(file));
+                    const aiImageBase64Promise = fileToBase64(newProductAiImageFile);
+                    
+                    const imageUrls = await Promise.all(imageBase64Promises);
+                    const aiImageUrl = await aiImageBase64Promise;
+
+                    const newProduct = { 
+                        id: Date.now(), 
+                        name: newProductName, 
+                        price: newProductPrice, 
+                        description: newProductDesc, 
+                        sizes: newProductSizes, 
+                        colors: newProductColors, 
+                        images: imageUrls, 
+                        tryOnImage: aiImageUrl
+                    }; 
+                    
+                    products.push(newProduct); 
+                    saveProducts(); 
+                    alert('Product added successfully!'); 
+                    e.target.reset(); 
+                    document.getElementById('image-preview-grid').innerHTML = ''; 
+                    document.getElementById('ai-image-preview').innerHTML = ''; 
+                    hideModal(document.getElementById('add-product-modal'));
+                    renderAdminProducts(); 
+                    displayProducts(products, allElements.productGrid); 
+
+                } catch (error) {
+                    console.error('Failed to process and save images:', error);
+                    alert('There was an error saving the product images. Please try again.');
+                }
+            };
+
+            const handleImagePreviews = (e) => { 
+                const grid = document.getElementById('image-preview-grid'); 
+                grid.innerHTML = ''; 
+                if (e.target.files.length > 5) {
+                    alert('You can upload a maximum of 5 main product images.'); 
+                    e.target.value = "";
+                    return; 
+                } 
+                Array.from(e.target.files).forEach(file => { 
+                    const img = document.createElement('img'); 
+                    img.className = 'preview-image'; 
+                    img.src = URL.createObjectURL(file); 
+                    grid.appendChild(img); 
+                }); 
+            };
+
+            const handleAiImagePreview = (e) => { 
+                const preview = document.getElementById('ai-image-preview'); 
+                preview.innerHTML = ''; 
+                if (e.target.files.length > 1) {
+                    alert('Please upload only ONE image for AI Try-On.');
+                    e.target.value = "";
+                    return;
+                }
+                if (e.target.files[0]) { 
+                    const img = document.createElement('img'); 
+                    img.className = 'preview-image'; 
+                    img.src = URL.createObjectURL(e.target.files[0]); 
+                    preview.appendChild(img); 
+                } 
+            };
+            
+            initApp();
+        });
+    </script>
+</body>
+</html>
