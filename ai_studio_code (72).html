@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASRAR CLOTHES</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { scroll-behavior: smooth; }
+        html.dark { color-scheme: dark; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .gradient-btn { background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%); }
+        .dark .dark-gradient-btn { background-image: linear-gradient(to right, #f472b6 0%, #60a5fa 100%); }
+        .page-enter { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        /* Hide scrollbars for sliders */
+        .category-slider::-webkit-scrollbar, .thumbnail-slider::-webkit-scrollbar { display: none; }
+        .category-slider, .thumbnail-slider { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Advanced Animations */
+        @keyframes kenburns {
+            0% { transform: scale(1.1) translate(0, 0); }
+            100% { transform: scale(1) translate(-2%, 2%); }
+        }
+        .ken-burns-effect {
+            animation: kenburns 20s ease-out infinite alternate;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-up {
+             opacity: 0;
+             animation: fadeInUp 0.8s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, createContext, useContext, useMemo, useRef } = React;
+
+        // --- MOCK DATA ---
+        const initialProducts = [
+            { id: '1', name: 'Urban Explorer Hoodie', price: 3200, category: 'Hoodie', description: 'A stylish and comfortable hoodie made from premium cotton blend, perfect for your city adventures.', colors: ['Shadow Black', 'Heather Grey', 'Navy Blue', 'Forest Green'], sizes: ['S', 'M', 'L', 'XL'], images: ['https://i.ibb.co/Fz0gLpP/young-man-wearing-a-black-hoodie-in-the-studio-23-2149342329.jpg', 'https://i.ibb.co/yWjYVkN/hoodie-mockup-in-a-studio-29479-265.jpg', 'https://i.ibb.co/3kC7Bv3/portrait-handsome-fashion-stylish-hipster-man-2.jpg', 'https://i.ibb.co/Rz5pQ4Z/portrait-handsome-fashion-stylish-hipster-man.jpg'], createdAt: new Date('2025-11-05T10:00:00Z').getTime(), isNewOverride: true, discountPrice: 2850, discountEndDate: new Date('2025-11-08T23:59:59Z').toISOString(), showDiscountTimer: true, },
+            { id: '2', name: 'Azure Performance Tee', price: 1500, category: 'T-Shirt', description: 'A lightweight and breathable t-shirt designed for performance and style.', colors: ['Ocean Blue', 'White'], sizes: ['S', 'M', 'L'], images: ['https://i.ibb.co/yWjYVkN/hoodie-mockup-in-a-studio-29479-265.jpg', 'https://i.ibb.co/b3X101N/portrait-handsome-fashion-stylish-hipster-man-model-dressed-checkered-shirt-fashion-man-posing.jpg'], createdAt: new Date('2025-10-20T10:00:00Z').getTime(), isNewOverride: false, discountPrice: null, discountEndDate: null, showDiscountTimer: false, },
+             { id: '3', name: 'Classic Denim Jacket', price: 4500, category: 'Jacket', description: 'A timeless denim jacket for a rugged, stylish look.', colors: ['Vintage Blue', 'Jet Black'], sizes: ['M', 'L', 'XL'], images: ['https://i.ibb.co/3kC7Bv3/portrait-handsome-fashion-stylish-hipster-man-2.jpg'], createdAt: new Date('2025-11-01T10:00:00Z').getTime(), isNewOverride: true, discountPrice: 4200, discountEndDate: null, showDiscountTimer: false, },
+        ];
+        const initialCategories = ['Hoodie', 'T-Shirt', 'Jacket', 'Pants', 'Accessories'];
+
+        // --- TRANSLATIONS ---
+        const translations = {
+            en: {
+                siteName: "ASRAR CLOTHES", home: "Home", sellerInfo: "Seller Info", language: "Language", theme: "Theme", about: "About", searchPlaceholder: "Search for products...", buyNow: "Buy Now", relatedProducts: "You Might Also Like", warningTitle: "Special Note", warningText: "Before placing an order, think carefully before ordering whether the product is necessary for you or refrain from placing a fake order. Abu Hurayrah (R.A.) narrated that the Messenger of Allah (ﷺ) said: \"He who deceives us is not one of us.\" (Sahih Muslim) Hadith No: 186", proceedToOrder: "Proceed to Order", customerName: "Full Name", deliveryAddress: "Full Delivery Address", phoneNumber: "Phone Number", emailAddress: "Email Address (Optional)", orderNow: "Confirm Order on WhatsApp", adminLogin: "Admin Login", username: "Username", password: "Password", login: "Login", adminPanel: "Admin Panel", addProduct: "Add Product", editProduct: "Edit Product", productName: "Product Name", price: "Price", colors: "Colors", sizes: "Sizes", images: "Product Images", save: "Save", cancel: "Cancel", delete: "Delete", productList: "Product List", categories: "Categories", all: "All", new: "New", sale: "Sale", discountPrice: "Discount Price (Optional)", discountEndDate: "Discount End Date", showNewBadge: "Show 'New' Badge", showCountdown: "Show Countdown Timer", endsIn: "Ends in", more: "more", categoryManagement: "Category Management", newCategory: "New Category Name", addCategory: "Add", deliveryLocation: "Delivery Location", insideDhaka: "Inside Dhaka (60 TK)", outsideDhaka: "Outside Dhaka (120 TK)", lightMode: "Light Mode", darkMode: "Dark Mode", totalAmount: "Total Amount", selectColor: "Select a Color", selectSize: "Select a Size", exploreNow: "Explore Now"
+            },
+            bn: {
+                siteName: "আসরার ক্লথস", home: "হোম", sellerInfo: "বিক্রেতার তথ্য", language: "ভাষা", theme: "থিম", about: "সম্পর্কে", searchPlaceholder: "পণ্য খুঁজুন...", buyNow: "এখনই কিনুন", relatedProducts: "আপনার আরও যা ভালো লাগতে পারে", warningTitle: "বিশেষ দ্রষ্টব্য", warningText: "অর্ডার করার পূর্বে একটি ভেবেচিন্তে অর্ডার করুন প্রোডাক্ট আপনার প্রয়োজন কিনা অথবা কিংবা ফেক অর্ডার করা থেকে বিরত থাকুন আবু হুরায়রা (রাঃ) থেকে বর্ণনা করেন যে, রাসূলুল্লাহ (ﷺ) বলেছেনঃ যে ব্যক্তি আমাদের ধোঁকা দিবে সে আমাদের দলভুক্ত নয়। (সহীহ মুসলিম) হাদীস নং: ১৮৬", proceedToOrder: "অর্ডার করতে এগিয়ে যান", customerName: "সম্পূর্ণ নাম", deliveryAddress: "সম্পূর্ণ ঠিকানা", phoneNumber: "ফোন নম্বর", emailAddress: "ইমেল ঠিকানা (ঐচ্ছিক)", orderNow: "WhatsApp এ অর্ডার নিশ্চিত করুন", adminLogin: "অ্যাডমিন লগইন", username: "ইউজারনেম", password: "পাসওয়ার্ড", login: "লগইন", adminPanel: "অ্যাডমিন প্যানেল", addProduct: "পণ্য যোগ করুন", editProduct: "পণ্য সম্পাদনা করুন", productName: "পণ্যের নাম", price: "মূল্য", colors: "রঙ", sizes: "সাইজ", images: "পণ্যের ছবি", save: "সংরক্ষণ করুন", cancel: "বাতিল করুন", delete: "মুছে ফেলুন", productList: "পণ্যের তালিকা", categories: "ক্যাটাগরি", all: "সব", new: "নতুন", sale: "ছাড়", discountPrice: "ডিসকাউন্ট মূল্য (ঐচ্ছিক)", discountEndDate: "ডিসকাউন্ট শেষ হওয়ার তারিখ", showNewBadge: "'নতুন' ব্যাজ দেখান", showCountdown: "কাউন্টডাউন টাইমার দেখান", endsIn: "শেষ হবে", more: "আরও", categoryManagement: "ক্যাটাগরি ম্যানেজমেন্ট", newCategory: "নতুন ক্যাটাগরির নাম", addCategory: "যোগ করুন", deliveryLocation: "ডেলিভারি এলাকা", insideDhaka: "ঢাকার ভিতরে (৬০ টাকা)", outsideDhaka: "ঢাকার বাহিরে (১২০ টাকা)", lightMode: "লাইট মোড", darkMode: "ডার্ক মোড", totalAmount: "সর্বমোট মূল্য", selectColor: "একটি রঙ নির্বাচন করুন", selectSize: "একটি সাইজ নির্বাচন করুন", exploreNow: "এখনই দেখুন"
+            }
+        };
+
+        // --- CORRECT LOGO URL ---
+        const logoUrl = "https://i.ibb.co/yY5JcR4/In-Shot-20251107-210603676.png";
+
+        // --- CONTEXT & APP SETUP ---
+        const AppContext = createContext();
+        const AppProvider = ({ children }) => {
+            const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+            const [language, setLanguage] = useState(() => localStorage.getItem('language') || 'en');
+            const [products, setProducts] = useState(() => JSON.parse(localStorage.getItem('products')) || initialProducts);
+            const [categories, setCategories] = useState(() => JSON.parse(localStorage.getItem('categories')) || initialCategories);
+            const [page, setPage] = useState({ name: 'home', data: null });
+            const [isAdmin, setIsAdmin] = useState(false);
+            const [selectedCategory, setSelectedCategory] = useState('All');
+
+            useEffect(() => { const root = window.document.documentElement; root.classList.remove('light', 'dark'); root.classList.add(theme); localStorage.setItem('theme', theme); }, [theme]);
+            useEffect(() => { localStorage.setItem('language', language); }, [language]);
+            useEffect(() => { localStorage.setItem('products', JSON.stringify(products)); }, [products]);
+            useEffect(() => { localStorage.setItem('categories', JSON.stringify(categories)); }, [categories]);
+
+            const value = { theme, toggleTheme: () => setTheme(p => p === 'light' ? 'dark' : 'light'), language, setLanguage, t: useMemo(() => translations[language], [language]), products, setProducts, categories, setCategories, page, setPage, isAdmin, setIsAdmin, selectedCategory, setSelectedCategory };
+            return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+        };
+        const useAppContext = () => useContext(AppContext);
+
+        // --- MAIN APP ROUTER ---
+        const App = () => {
+            const { isAdmin } = useAppContext();
+            const [showLandingPage, setShowLandingPage] = useState(true);
+
+            if (showLandingPage) {
+                return <LandingPage onExplore={() => setShowLandingPage(false)} />;
+            }
+
+            return isAdmin ? <AdminPanel /> : <ClientWebsite />;
+        };
+
+        // --- NEW & IMPROVED LANDING PAGE COMPONENT ---
+        const LandingPage = ({ onExplore }) => {
+            const { t, products } = useAppContext();
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const landingImages = useMemo(() => products.flatMap(p => p.images).slice(0, 5), [products]);
+
+            useEffect(() => {
+                if (landingImages.length === 0) return;
+                const timer = setInterval(() => {
+                    setCurrentIndex(prevIndex => (prevIndex + 1) % landingImages.length);
+                }, 5000);
+                return () => clearInterval(timer);
+            }, [landingImages.length]);
+
+            return (
+                <div className="relative h-screen w-screen overflow-hidden flex flex-col items-center justify-center text-white">
+                    {landingImages.map((image, index) => (
+                        <div
+                            key={index}
+                            className={`absolute top-0 left-0 w-full h-full transition-opacity duration-1000 ease-in-out ${index === currentIndex ? 'opacity-100' : 'opacity-0'}`}
+                        >
+                             <div
+                                style={{ backgroundImage: `url(${image})`}}
+                                className="w-full h-full bg-cover bg-center ken-burns-effect"
+                             />
+                        </div>
+                    ))}
+                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/80 via-black/40 to-black/20"></div>
+                    <div className="relative z-10 flex flex-col items-center justify-center text-center p-4">
+                        <img
+                            src={logoUrl}
+                            alt="ASRAR CLOTHES Logo"
+                            className="h-28 w-auto object-contain mb-4 drop-shadow-2xl fade-in-up"
+                            style={{ animationDelay: '0.2s' }}
+                        />
+                        <h1
+                            className="text-5xl md:text-7xl font-extrabold tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400 drop-shadow-lg fade-in-up"
+                            style={{ animationDelay: '0.5s' }}
+                        >
+                           {t.siteName}
+                        </h1>
+                        <p
+                            className="mt-2 text-lg md:text-xl text-gray-300 tracking-wider fade-in-up"
+                            style={{ animationDelay: '0.8s' }}
+                        >
+                           because beauty is a mystery.
+                        </p>
+                        <button
+                            onClick={onExplore}
+                            className="mt-12 px-10 py-4 text-lg font-bold text-white rounded-lg shadow-2xl transform transition-all duration-300 hover:scale-110 active:scale-100 gradient-btn dark:dark-gradient-btn fade-in-up"
+                            style={{ animationDelay: '1.1s' }}
+                        >
+                            {t.exploreNow}
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- HELPER HOOKS & FUNCTIONS ---
+        const useCountdown = (targetDate) => {
+            const countDownDate = new Date(targetDate).getTime();
+            const [countDown, setCountDown] = useState(countDownDate - new Date().getTime());
+            useEffect(() => { if (!targetDate) return; const interval = setInterval(() => { const remaining = countDownDate - new Date().getTime(); if (remaining > 0) { setCountDown(remaining); } else { setCountDown(0); clearInterval(interval); } }, 1000); return () => clearInterval(interval); }, [targetDate]);
+            const d = Math.floor(countDown / (1000 * 60 * 60 * 24)), h = Math.floor((countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)), m = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60)), s = Math.floor((countDown % (1000 * 60)) / 1000);
+            return { days: d, hours: h, minutes: m, seconds: s, isRunning: countDown > 0 };
+        };
+        const useSwipe = ({ onSwipedLeft, onSwipedRight }) => {
+            const touchStart = useRef(null), touchEnd = useRef(null), minSwipeDistance = 50;
+            const onTouchStart = (e) => { touchEnd.current = null; touchStart.current = e.targetTouches[0].clientX; };
+            const onTouchMove = (e) => { touchEnd.current = e.targetTouches[0].clientX; };
+            const onTouchEnd = () => { if (!touchStart.current || !touchEnd.current) return; const distance = touchStart.current - touchEnd.current; if (distance > minSwipeDistance) onSwipedLeft(); if (distance < -minSwipeDistance) onSwipedRight(); touchStart.current = null; touchEnd.current = null; };
+            return { onTouchStart, onTouchMove, onTouchEnd };
+        };
+        const applyWatermark = (imageSrc) => {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {
+                    const canvas = document.createElement('canvas'), ctx = canvas.getContext('2d');
+                    canvas.width = img.width; canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    const fontSize = Math.max(18, Math.floor(canvas.width / 40));
+                    ctx.font = `bold ${fontSize}px Poppins`; ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    const x = canvas.width / 2, y1 = canvas.height - (fontSize * 2.2), y2 = canvas.height - fontSize;
+                    ctx.fillText("ASRAR CLOTHES", x, y1); ctx.fillText("asrarclothes.com", x, y2);
+                    resolve(canvas.toDataURL('image/jpeg', 0.9));
+                };
+                img.onerror = reject; img.src = imageSrc;
+            });
+        };
+
+        // --- ADMIN PANEL & COMPONENTS ---
+        const AdminPanel = () => {
+            const { t, products, setProducts, setIsAdmin } = useAppContext();
+            const [editingProduct, setEditingProduct] = useState(null);
+            const handleSave = (product) => { if (product.id) { setProducts(products.map(p => p.id === product.id ? product : p)); } else { setProducts([{ ...product, id: Date.now().toString() }, ...products]); } setEditingProduct(null); };
+            const handleDelete = (id) => { if (window.confirm('Are you sure?')) setProducts(products.filter(p => p.id !== id)); };
+
+            return (
+                <div className="p-6 bg-slate-100 dark:bg-gray-800 min-h-screen">
+                    <div className="flex justify-between items-center mb-6"> <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t.adminPanel}</h1> <button onClick={() => setIsAdmin(false)} className="px-4 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-600">Exit Admin</button> </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div><ProductForm product={editingProduct} onSave={handleSave} onCancel={() => setEditingProduct(null)} /><CategoryManager /></div>
+                        <div className="lg:col-span-2 bg-white dark:bg-gray-900 p-4 rounded-xl shadow-lg">
+                            <h2 className="text-xl font-bold mb-4">{t.productList}</h2>
+                            <div className="space-y-2 max-h-[80vh] overflow-y-auto"> {products.map(p => ( <div key={p.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-gray-800"> <div className="flex items-center gap-4"> <img src={p.images[0]} alt={p.name} className="w-12 h-12 object-cover rounded-md"/> <div> <p className="font-semibold">{p.name}</p> <p className="text-sm text-gray-500 dark:text-gray-400">৳{p.price.toFixed(2)}</p> </div> </div> <div className="flex gap-2"> <button onClick={() => setEditingProduct(p)} className="px-3 py-1 text-sm bg-yellow-500 text-white rounded shadow hover:bg-yellow-600">{t.editProduct}</button> <button onClick={() => handleDelete(p.id)} className="px-3 py-1 text-sm bg-red-500 text-white rounded shadow hover:bg-red-600">{t.delete}</button> </div> </div> ))} </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+        const CategoryManager = () => {
+            const { t, categories, setCategories } = useAppContext();
+            const [newCategory, setNewCategory] = useState('');
+            const handleAdd = (e) => { e.preventDefault(); if (newCategory && !categories.includes(newCategory)) { setCategories([...categories, newCategory]); setNewCategory(''); }};
+            const handleDelete = (catToDelete) => { if(window.confirm(`Delete category "${catToDelete}"?`)) setCategories(categories.filter(c => c !== catToDelete)); };
+            return (
+                <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg mt-6">
+                    <h2 className="text-xl font-bold mb-4">{t.categoryManagement}</h2>
+                    <ul className="space-y-2 mb-4">
+                        {categories.map(cat => <li key={cat} className="flex justify-between items-center p-2 bg-slate-100 dark:bg-gray-800 rounded-md"><span>{cat}</span><button onClick={()=>handleDelete(cat)} className="text-red-500 hover:text-red-700 font-bold">✕</button></li>)}
+                    </ul>
+                    <form onSubmit={handleAdd} className="flex gap-2"> <input value={newCategory} onChange={(e) => setNewCategory(e.target.value)} placeholder={t.newCategory} className="w-full p-3 bg-slate-100 dark:bg-gray-800 rounded-lg" /> <button type="submit" className="px-4 py-2 text-white rounded-lg gradient-btn dark:dark-gradient-btn">{t.addCategory}</button> </form>
+                </div>
+            );
+        };
+        const ProductForm = ({ product, onSave, onCancel }) => {
+            const { t, categories } = useAppContext();
+            const initialState = { name: '', price: '', category: categories[0] || '', description: '', colors: '', sizes: '', images: [], isNewOverride: true, discountPrice: '', discountEndDate: '', showDiscountTimer: false };
+            const [formState, setFormState] = useState(initialState);
+
+            useEffect(() => { if (product) { setFormState({ ...initialState, ...product, colors: product.colors.join(', '), sizes: product.sizes.join(', '), discountPrice: product.discountPrice || '', discountEndDate: product.discountEndDate ? product.discountEndDate.substring(0, 16) : '', }); } else { setFormState(initialState); } }, [product, categories]);
+            const handleChange = (e) => { const { name, value, type, checked } = e.target; setFormState({ ...formState, [name]: type === 'checkbox' ? checked : value }); };
+            const handleImageChange = (e) => { const files = Array.from(e.target.files); if (formState.images.length + files.length > 12) { alert("Max 12 images"); return; } files.forEach(file => { const reader = new FileReader(); reader.onloadend = async () => { try { const watermarkedSrc = await applyWatermark(reader.result); setFormState(prev => ({ ...prev, images: [...prev.images, watermarkedSrc] })); } catch (error) { console.error("Watermark failed", error); setFormState(prev => ({...prev, images: [...prev.images, reader.result]})); } }; reader.readAsDataURL(file); }); };
+            const handleSubmit = (e) => { e.preventDefault(); const finalProduct = { ...formState, id: product ? product.id : null, createdAt: product ? product.createdAt : Date.now(), price: parseFloat(formState.price), discountPrice: formState.discountPrice ? parseFloat(formState.discountPrice) : null, discountEndDate: formState.discountEndDate ? new Date(formState.discountEndDate).toISOString() : null, colors: formState.colors.split(',').map(s => s.trim()).filter(Boolean), sizes: formState.sizes.split(',').map(s => s.trim()).filter(Boolean), }; onSave(finalProduct); };
+
+            return (
+                <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg space-y-4">
+                    <h2 className="text-xl font-bold mb-4">{product ? t.editProduct : t.addProduct}</h2>
+                    <input name="name" value={formState.name} onChange={handleChange} placeholder={t.productName} className="w-full p-3 bg-slate-100 dark:bg-gray-800 rounded-lg" required />
+                    <select name="category" value={formState.category} onChange={handleChange} className="w-full p-3 bg-slate-100 dark:bg-gray-800 rounded-lg"> {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)} </select>
+                    <input name="price" type="number" step="0.01" value={formState.price} onChange={handleChange} placeholder={t.price} className="w-full p-3 bg-slate-100 dark:bg-gray-800 rounded-lg" required />
+                    <textarea name="description" value={formState.description} onChange={handleChange} placeholder="Description" className="w-full p-3 bg-slate-100 dark:bg-gray-800 rounded-lg h-24" />
+                    <input name="colors" value={formState.colors} onChange={handleChange} placeholder="Colors (comma separated)" className="w-full p-3 bg-slate-100 dark:bg-gray-800 rounded-lg" />
+                    <input name="sizes" value={formState.sizes} onChange={handleChange} placeholder="Sizes (comma separated)" className="w-full p-3 bg-slate-100 dark:bg-gray-800 rounded-lg" />
+                    <div className="border-t dark:border-gray-700 pt-4 space-y-4"> <input name="discountPrice" type="number" step="0.01" value={formState.discountPrice} onChange={handleChange} placeholder={t.discountPrice} className="w-full p-3 bg-slate-100 dark:bg-gray-800 rounded-lg" /> <div> <label className="block text-sm font-medium mb-1">{t.discountEndDate}</label> <input name="discountEndDate" type="datetime-local" value={formState.discountEndDate} onChange={handleChange} className="w-full p-3 bg-slate-100 dark:bg-gray-800 rounded-lg" /> </div> <label className="flex items-center gap-2"><input type="checkbox" name="showDiscountTimer" checked={formState.showDiscountTimer} onChange={handleChange} /> {t.showCountdown}</label> </div>
+                    <div className="border-t dark:border-gray-700 pt-4"> <label className="flex items-center gap-2"><input type="checkbox" name="isNewOverride" checked={formState.isNewOverride} onChange={handleChange} /> {t.showNewBadge}</label> </div>
+                    <div className="flex gap-2 justify-end pt-4"> {product && <button type="button" onClick={onCancel} className="px-4 py-2 bg-slate-200 dark:bg-gray-700 rounded-lg">{t.cancel}</button>} <button type="submit" className="px-6 py-2 text-white rounded-lg gradient-btn dark:dark-gradient-btn">{t.save}</button> </div>
+                </form>
+            );
+        };
+
+        // --- CLIENT WEBSITE & COMPONENTS ---
+        const ClientWebsite = ({...props}) => { const { page } = useAppContext(); const renderPage = () => { switch (page.name) { case 'pdp': return <ProductDetailPage product={page.data} />; case 'sellerInfo': return <SellerInfoPage />; default: return <HomePage />; } }; return ( <div> <Header /> <main className="container mx-auto px-4 py-8">{renderPage()}</main> <BackToTopButton /> <FloatingHelpButton /> </div> ); };
+
+        const HomePage = () => {
+            const { t, products, selectedCategory } = useAppContext();
+            const [searchTerm, setSearchTerm] = useState('');
+            const filteredProducts = useMemo(() => {
+                let results = products;
+                if (selectedCategory === 'New') { results = products.filter(p => p.isNewOverride || (Date.now() - p.createdAt < 3 * 24 * 60 * 60 * 1000)); }
+                else if (selectedCategory !== 'All') { results = products.filter(p => p.category === selectedCategory); }
+                return results.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+            }, [products, selectedCategory, searchTerm]);
+
+            return (
+                <div className="page-enter">
+                    <HeroSlider />
+                    <div className="mb-4 sticky top-[70px] z-20 bg-slate-50/80 dark:bg-gray-900/80 backdrop-blur-sm py-4">
+                        <input type="text" placeholder={t.searchPlaceholder} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 rounded-full bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 outline-none" />
+                        <CategorySlider />
+                    </div>
+                    {filteredProducts.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {filteredProducts.map(product => <ProductCard key={product.id} product={product} />)}
+                        </div>
+                    ) : ( <div className="text-center py-16 text-gray-500 dark:text-gray-400"> <h2 className="text-2xl font-semibold">No products found</h2> <p>Try adjusting your search filters.</p> </div> )}
+                </div>
+            );
+        };
+        const CategorySlider = () => {
+            const { t, categories, selectedCategory, setSelectedCategory } = useAppContext();
+            const allCats = [{name: t.all, value: 'All'}, {name: t.new, value: 'New'}, ...categories.map(cat => ({ name: cat, value: cat }))];
+            return (
+                <div className="category-slider flex items-center gap-3 overflow-x-auto pt-4 -mx-4 px-4">
+                    {allCats.map(cat => ( <button key={cat.value} onClick={() => setSelectedCategory(cat.value)} className={`px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors duration-300 focus:outline-none ${selectedCategory === cat.value ? 'bg-blue-500 text-white shadow-md' : 'bg-white dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700'}`}> {cat.name} </button> ))}
+                </div>
+            );
+        };
+        const ProductCard = ({ product }) => {
+            const { t, setPage } = useAppContext();
+            const { days, hours, minutes, seconds, isRunning } = useCountdown(product.discountEndDate);
+            const isDiscountActive = product.discountPrice && (!product.discountEndDate || isRunning);
+            const isNew = product.isNewOverride || (Date.now() - product.createdAt < 3 * 24 * 60 * 60 * 1000);
+            const mapColor = c => ({'black':'bg-black','grey':'bg-gray-400','gray':'bg-gray-400','white':'bg-white border border-gray-300','blue':'bg-blue-500','green':'bg-green-500','red':'bg-red-500'})[c.toLowerCase().split(' ').pop()]||'bg-gray-300';
+
+            return (
+                <div onClick={() => setPage({ name: 'pdp', data: product })} className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden group cursor-pointer transform transition-all hover:shadow-2xl hover:-translate-y-2 flex flex-col">
+                    <div className="relative overflow-hidden"> <img src={product.images[0]} alt={product.name} className="w-full h-72 object-cover group-hover:scale-105 transition-transform" /> <div className="absolute top-3 right-3 flex flex-col gap-2"> {isNew && <span className="px-3 py-1 text-xs font-bold text-white bg-green-500 rounded-full">{t.new}</span>} {isDiscountActive && <span className="px-3 py-1 text-xs font-bold text-white bg-red-500 rounded-full">{t.sale}</span>} </div> </div>
+                    <div className="p-5 flex-grow flex flex-col">
+                        <h2 className="text-xl font-semibold truncate flex-grow">{product.name}</h2>
+                        <div className="flex items-center gap-2 mt-2 h-5"> {product.colors.slice(0, 3).map(c => <div key={c} className={`w-5 h-5 rounded-full ${mapColor(c)}`}></div>)} {product.colors.length > 3 && <span className="text-xs text-gray-500 dark:text-gray-400">+{product.colors.length - 3} {t.more}</span>} </div>
+                        <div className="mt-4"> {isDiscountActive ? ( <div className="flex items-end gap-2"> <p className="text-2xl font-bold text-blue-500 dark:text-blue-400">৳{product.discountPrice.toFixed(2)}</p> <p className="text-md text-gray-400 line-through">৳{product.price.toFixed(2)}</p> </div> ) : ( <p className="text-2xl font-bold text-blue-500 dark:text-blue-400">৳{product.price.toFixed(2)}</p> )} </div>
+                        {isDiscountActive && product.showDiscountTimer && ( <div className="mt-3 p-2 bg-red-50 dark:bg-red-900/40 rounded-lg text-center"> <p className="text-xs font-medium text-red-600 dark:text-red-300">{t.endsIn}: {days}d {hours}h {minutes}m {seconds}s</p> </div> )}
+                    </div>
+                </div>
+            );
+        };
+        const ImageLightbox = ({ images, startIndex, onClose }) => {
+            const [currentIndex, setCurrentIndex] = useState(startIndex);
+            const handlePrev = (e) => { e.stopPropagation(); setCurrentIndex(p => (p - 1 + images.length) % images.length); };
+            const handleNext = (e) => { e.stopPropagation(); setCurrentIndex(p => (p + 1) % images.length); };
+            const swipeHandlers = useSwipe({ onSwipedLeft: () => handleNext({stopPropagation:()=>{}}), onSwipedRight: () => handlePrev({stopPropagation:()=>{}}) });
+            useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'Escape') onClose(); if (e.key === 'ArrowLeft') handlePrev(e); if (e.key === 'ArrowRight') handleNext(e); }; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, []);
+
+            return (
+                <div className="fixed inset-0 bg-black/80 z-[100] flex flex-col items-center justify-center p-4" onClick={onClose}>
+                    <button onClick={onClose} className="absolute top-4 right-4 text-white text-4xl font-bold z-10">&times;</button>
+                    <div {...swipeHandlers} className="relative w-full h-full max-w-5xl max-h-[80vh] flex items-center justify-center" onClick={e => e.stopPropagation()}><img src={images[currentIndex]} className="max-w-full max-h-full object-contain" /></div>
+                    <div className="thumbnail-slider w-full max-w-xl flex justify-center items-center gap-2 overflow-x-auto p-4">
+                        {images.map((img, i) => <img key={i} src={img} onClick={(e) => { e.stopPropagation(); setCurrentIndex(i); }} className={`w-16 h-16 object-cover rounded-lg cursor-pointer border-2 ${currentIndex === i ? 'border-white' : 'border-transparent opacity-60 hover:opacity-100'}`} />)}
+                    </div>
+                    {images.length > 1 && <>
+                        <button onClick={handlePrev} className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black/30 p-2 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg></button>
+                        <button onClick={handleNext} className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black/30 p-2 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg></button>
+                    </>}
+                </div>
+            );
+        };
+        const ProductDetailPage = ({ product }) => {
+            const { t, products, setPage } = useAppContext();
+            const pageRef = useRef(null);
+            useEffect(() => { pageRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [product.id]);
+
+            const { days, hours, minutes, seconds, isRunning } = useCountdown(product.discountEndDate);
+            const isDiscountActive = product.discountPrice && (!product.discountEndDate || isRunning);
+
+            const [showWarning, setShowWarning] = useState(false);
+            const [showOrderForm, setShowOrderForm] = useState(false);
+            const [selectedIndex, setSelectedIndex] = useState(0);
+            const [lightboxOpen, setLightboxOpen] = useState(false);
+
+            let relatedProducts = products.filter(p => p.category === product.category && p.id !== product.id);
+            if(relatedProducts.length === 0){ relatedProducts = products.filter(p => p.id !== product.id).sort(() => 0.5 - Math.random()).slice(0, 3); }
+            const images = product.images?.length ? product.images : ['https://via.placeholder.com/600x600.png?text=No+Image'];
+
+            return (
+                <div ref={pageRef} className="page-enter">
+                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 mb-16">
+                        <div className="lg:col-span-3">
+                            <div className="relative bg-white dark:bg-gray-800/50 rounded-2xl shadow-lg flex items-center justify-center p-4 aspect-square overflow-hidden cursor-pointer" onClick={() => setLightboxOpen(true)}>
+                                <img key={selectedIndex} src={images[selectedIndex]} alt={product.name} className="w-full h-full object-contain"/>
+                            </div>
+                            {images.length > 1 && (
+                                <div className="thumbnail-slider flex items-center gap-2 overflow-x-auto mt-4">
+                                    {images.map((img, i) => <img key={i} src={img} onClick={() => setSelectedIndex(i)} className={`w-24 h-24 object-cover rounded-lg cursor-pointer border-2 transition-all ${selectedIndex === i ? 'border-blue-500 scale-105' : 'border-transparent hover:border-gray-400/50'}`} />)}
+                                </div>
+                            )}
+                        </div>
+                        <div className="lg:col-span-2"> <span className="px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 rounded-full text-sm font-medium">{product.category}</span> <h1 className="text-4xl lg:text-5xl font-bold my-4">{product.name}</h1> {isDiscountActive ? ( <div className="flex items-end gap-3 mb-6"> <p className="text-4xl font-bold text-blue-500 dark:text-blue-400">৳{product.discountPrice.toFixed(2)}</p> <p className="text-2xl text-gray-400 line-through">৳{product.price.toFixed(2)}</p> </div> ) : ( <p className="text-4xl font-bold text-blue-500 dark:text-blue-400 mb-6">৳{product.price.toFixed(2)}</p> )} {isDiscountActive && product.showDiscountTimer && ( <div className="mb-6 p-3 bg-red-50 dark:bg-red-900/40 rounded-lg text-center"> <p className="text-lg font-medium text-red-600 dark:text-red-300">{t.endsIn}: {days}d {hours}h {minutes}m {seconds}s</p> </div> )} <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">{product.description}</p> <div className="mb-6"> <h3 className="text-lg font-semibold mb-2">{t.colors}</h3> <div className="flex flex-wrap gap-2">{product.colors.map(c => <span key={c} className="px-4 py-2 bg-slate-100 dark:bg-gray-800 border dark:border-gray-700 rounded-lg text-sm">{c}</span>)}</div> </div> <div className="mb-8"> <h3 className="text-lg font-semibold mb-2">{t.sizes}</h3> <div className="flex flex-wrap gap-2">{product.sizes.map(s => <span key={s} className="w-12 h-12 flex items-center justify-center border-2 dark:border-gray-700 rounded-lg text-sm">{s}</span>)}</div> </div> <button onClick={() => setShowWarning(true)} className="w-full py-4 text-white text-lg font-semibold rounded-lg shadow-lg transform hover:scale-105 active:scale-100 gradient-btn dark:dark-gradient-btn">{t.buyNow}</button> </div>
+                    </div>
+                    {relatedProducts.length > 0 && ( <div> <h2 className="text-3xl font-bold mb-6 text-center">{t.relatedProducts}</h2> <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"> {relatedProducts.slice(0, 3).map(p => <ProductCard key={p.id} product={p} />)} </div> </div> )}
+                    {showWarning && <WarningModal onProceed={() => { setShowWarning(false); setShowOrderForm(true); }} onCancel={() => setShowWarning(false)} />}
+                    {showOrderForm && <OrderModal product={product} onCancel={() => setShowOrderForm(false)} />}
+                    {lightboxOpen && <ImageLightbox images={images} startIndex={selectedIndex} onClose={() => setLightboxOpen(false)} />}
+                </div>
+            );
+        };
+        const OrderModal = ({ product, onCancel }) => {
+            const { t } = useAppContext();
+            const { isRunning } = useCountdown(product.discountEndDate);
+            const isDiscountActive = product.discountPrice && (!product.discountEndDate || isRunning);
+            const finalPrice = isDiscountActive ? product.discountPrice : product.price;
+            const [form, setForm] = useState({ name: '', address: '', phone: '', email: '' });
+            const [selectedColor, setSelectedColor] = useState(null);
+            const [selectedSize, setSelectedSize] = useState(null);
+            const [deliveryLocation, setDeliveryLocation] = useState('inside_dhaka');
+            const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+
+            const handleOrder = (e) => {
+                e.preventDefault();
+                const deliveryCharge = deliveryLocation === 'inside_dhaka' ? 60 : 120;
+                const totalAmount = finalPrice + deliveryCharge;
+                const message = `*New Order - ASRAR CLOTHES*\n-----------------------------------\n*Product:* ${product.name}\n*Color:* ${selectedColor}\n*Size:* ${selectedSize}\n*Price:* ৳${finalPrice.toFixed(2)} ${isDiscountActive ? '(Discounted)' : ''}\n*Delivery Charge:* ৳${deliveryCharge.toFixed(2)}\n-----------------------------------\n*${t.totalAmount}:* *৳${totalAmount.toFixed(2)}*\n-----------------------------------\n*Customer Details:*\n- Name: ${form.name}\n- Address: ${form.address}\n- Phone: ${form.phone}\n${form.email ? `- Email: ${form.email}` : ''}`.trim().replace(/\n\s*\n/g, '\n');
+                window.open(`https://wa.me/8801924445908?text=${encodeURIComponent(message)}`, '_blank');
+                onCancel();
+            };
+
+            return (
+                <Modal closeModal={onCancel}> <h2 className="text-2xl font-bold mb-4">Delivery Information</h2> <form onSubmit={handleOrder} className="space-y-4"> <div><h3 className="text-base font-semibold mb-2">{t.colors}</h3><div className="flex flex-wrap gap-2">{product.colors.map(c => <button type="button" key={c} onClick={()=>setSelectedColor(c)} className={`px-4 py-2 rounded-lg border-2 ${selectedColor === c ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/50' : 'bg-slate-100 dark:bg-gray-700'}`}>{c}</button>)}</div></div> <div><h3 className="text-base font-semibold mb-2">{t.sizes}</h3><div className="flex flex-wrap gap-2">{product.sizes.map(s => <button type="button" key={s} onClick={()=>setSelectedSize(s)} className={`w-12 h-12 rounded-lg border-2 ${selectedSize === s ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/50' : 'bg-slate-100 dark:bg-gray-700'}`}>{s}</button>)}</div></div> <input name="name" onChange={handleChange} placeholder={t.customerName} className="w-full p-3 bg-slate-100 dark:bg-gray-700 rounded-lg" required /> <input name="address" onChange={handleChange} placeholder={t.deliveryAddress} className="w-full p-3 bg-slate-100 dark:bg-gray-700 rounded-lg" required /> <input name="phone" onChange={handleChange} placeholder={t.phoneNumber} className="w-full p-3 bg-slate-100 dark:bg-gray-700 rounded-lg" required /> <div><h3 className="text-base font-semibold mb-2">{t.deliveryLocation}</h3><div role="radiogroup" className="flex gap-4"><label className="flex-1 flex items-center gap-2 cursor-pointer p-3 bg-slate-100 dark:bg-gray-700/50 rounded-lg border-2 has-[:checked]:border-blue-500"><input type="radio" name="delivery" value="inside_dhaka" checked={deliveryLocation==='inside_dhaka'} onChange={(e)=>setDeliveryLocation(e.target.value)}/>{t.insideDhaka}</label><label className="flex-1 flex items-center gap-2 cursor-pointer p-3 bg-slate-100 dark:bg-gray-700/50 rounded-lg border-2 has-[:checked]:border-blue-500"><input type="radio" name="delivery" value="outside_dhaka" checked={deliveryLocation==='outside_dhaka'} onChange={(e)=>setDeliveryLocation(e.target.value)}/>{t.outsideDhaka}</label></div></div> <button type="submit" disabled={!selectedColor || !selectedSize} className="w-full py-3 text-white rounded-lg gradient-btn dark:dark-gradient-btn disabled:opacity-50 disabled:cursor-not-allowed">{!selectedColor ? t.selectColor : !selectedSize ? t.selectSize : t.orderNow}</button> </form> </Modal>
+            );
+        };
+
+        // --- HEADER COMPONENT (UPDATED) ---
+        const Header = ({...props}) => {
+            const { t, page, setPage } = useAppContext();
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+            return (
+            <>
+                <header className="sticky top-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm z-30 shadow-sm">
+                    <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+                        <div className="flex items-center gap-4">
+                            {page.name !== 'home' && (
+                                <button onClick={() => setPage({ name: 'home' })} className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white p-2 rounded-full -ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                                </button>
+                            )}
+                            <div className="flex items-center gap-3 cursor-pointer" onClick={() => setPage({ name: 'home' })}>
+                                <img src={logoUrl} alt="ASRAR CLOTHES Logo" className="h-12 w-auto object-contain"/>
+                                <div>
+                                    <span className="text-2xl font-extrabold tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500 dark:from-purple-400 dark:to-pink-400">
+                                        {t.siteName}
+                                    </span>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 font-normal tracking-tight -mt-1">
+                                        because beauty is a mystery.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <button onClick={() => setIsMenuOpen(true)} className="text-gray-600 dark:text-gray-300 p-2 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                        </button>
+                    </div>
+                </header>
+                <DrawerMenu isOpen={isMenuOpen} closeMenu={() => setIsMenuOpen(false)} />
+            </>
+            );
+        };
+
+        // --- Remaining boilerplate components ---
+        const DrawerMenu = ({ isOpen, closeMenu }) => { const { t, theme, toggleTheme, language, setLanguage, setPage } = useAppContext(); const [showAbout, setShowAbout] = useState(false); const [showAdminLogin, setShowAdminLogin] = useState(false); const navigate = (pageName) => { setPage({ name: pageName }); closeMenu(); }; useEffect(() => { const handleEsc = (event) => { if (event.keyCode === 27) closeMenu(); }; window.addEventListener('keydown', handleEsc); return () => window.removeEventListener('keydown', handleEsc); }, [closeMenu]); return ( <div className={`fixed inset-0 z-50 transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}> <div className="absolute inset-0 bg-black/60" onClick={closeMenu}></div> <div className={`absolute top-0 right-0 h-full w-80 bg-white dark:bg-gray-800 shadow-2xl p-6 flex flex-col transition-transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}> <button onClick={closeMenu} className="self-end mb-8 text-gray-500 hover:text-black dark:hover:text-white"><svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button> <nav className="space-y-4"> <a href="#" onClick={(e) => { e.preventDefault(); navigate('home'); }} className="block text-lg hover:text-blue-500">{t.home}</a> <a href="#" onClick={(e) => { e.preventDefault(); navigate('sellerInfo'); }} className="block text-lg hover:text-blue-500">{t.sellerInfo}</a> <a href="#" onClick={(e) => { e.preventDefault(); setShowAbout(true); }} className="block text-lg hover:text-blue-500">{t.about}</a> </nav> <div className="mt-auto space-y-6"> <div> <span className="text-lg block mb-2">{t.language}</span> <div className="flex gap-2"> <button onClick={() => setLanguage('en')} className={`px-4 py-2 rounded-full text-sm ${language === 'en' ? 'bg-blue-500 text-white shadow' : 'bg-slate-200 dark:bg-gray-700'}`}>English</button> <button onClick={() => setLanguage('bn')} className={`px-4 py-2 rounded-full text-sm ${language === 'bn' ? 'bg-blue-500 text-white shadow' : 'bg-slate-200 dark:bg-gray-700'}`}>বাংলা</button> </div> </div> <div> <span className="text-lg block mb-2">{t.theme}</span> <button onClick={toggleTheme} className="w-full p-2 flex items-center justify-between rounded-full bg-slate-200 dark:bg-gray-700"> <span className="font-medium pl-2">{theme === 'light' ? t.lightMode : t.darkMode}</span> <div className="p-1 rounded-full bg-white dark:bg-gray-900 shadow-sm"> {theme === 'light' ? <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-orange-500" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 14.95a1 1 0 010-1.414l.707-.707a1 1 0 011.414 1.414l-.707.707a1 1 0 01-1.414 0zM5 11a1 1 0 100-2H4a1 1 0 100 2h1z" clipRule="evenodd" /></svg> : <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-slate-400" viewBox="0 0 20 20" fill="currentColor"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>} </div> </button> </div> </div> </div> {showAbout && <AboutModal closeModal={() => setShowAbout(false)} openAdminLogin={() => { setShowAdminLogin(true); setShowAbout(false); }} />} {showAdminLogin && <AdminLoginModal closeModal={() => setShowAdminLogin(false)} />} </div> ); };
+        const HeroSlider = () => { const { products, setPage } = useAppContext(); const [currentIndex, setCurrentIndex] = useState(0); const featuredProducts = products.slice(0, 4); useEffect(() => { if (featuredProducts.length === 0) return; const timer = setInterval(() => { setCurrentIndex(prevIndex => (prevIndex + 1) % featuredProducts.length); }, 5000); return () => clearInterval(timer); }, [featuredProducts.length]); const product = featuredProducts[currentIndex]; if (!product) return null; return ( <div onClick={() => setPage({ name: 'pdp', data: product })} className="relative w-full h-64 md:h-80 rounded-2xl overflow-hidden shadow-2xl cursor-pointer group mb-10"> <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" /> <div className="absolute inset-0 bg-black/50"></div> <div className="absolute bottom-0 left-0 p-6 md:p-8 text-white"> <h2 className="text-2xl md:text-4xl font-bold">{product.name}</h2> <p className="text-lg md:text-xl">৳{product.price.toFixed(2)}</p> </div> </div> ); };
+        const SellerInfoPage = () => ( <div className="page-enter max-w-2xl mx-auto p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg"> <h1 className="text-3xl font-bold mb-6">Seller Information</h1> <div className="space-y-3 text-gray-600 dark:text-gray-400"> <p><strong>About ASRAR Clothes:</strong> We provide premium quality clothing.</p> <p><strong>Contact:</strong> example@gmail.com</p> <p><strong>Facebook:</strong> facebook.com/example</p> <p><strong>Phone:</strong> +8801xxxxxxxxx</p> </div> </div> );
+        const BackToTopButton = () => { const [isVisible, setIsVisible] = useState(false); useEffect(() => { const toggle = () => setIsVisible(window.pageYOffset > 300); window.addEventListener('scroll', toggle); return () => window.removeEventListener('scroll', toggle); }, []); return ( <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className={`fixed bottom-6 right-6 p-3 rounded-full text-white gradient-btn dark:dark-gradient-btn shadow-lg transition-opacity ${isVisible ? 'opacity-100' : 'opacity-0'}`}><svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg></button> ); };
+        const Modal = ({ closeModal, children }) => ( <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" onClick={closeModal}> <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 sm:p-8 w-full max-w-md page-enter" onClick={e => e.stopPropagation()}>{children}</div> </div> );
+        const AboutModal = ({ closeModal, openAdminLogin }) => { const pressTimer = useRef(); const handlePressStart = () => { pressTimer.current = setTimeout(openAdminLogin, 5000); }; return ( <Modal closeModal={closeModal}> <h2 className="text-2xl font-bold mb-4">About ASRAR CLOTHES</h2> <div className="text-sm space-y-1 text-gray-600 dark:text-gray-400"> <p><strong>Design & Development:</strong> MMH ANAS</p> <p><strong>Contact:</strong> mmhanas14@gmail.com</p> <p onMouseDown={handlePressStart} onMouseUp={() => clearTimeout(pressTimer.current)} onMouseLeave={() => clearTimeout(pressTimer.current)} onTouchStart={handlePressStart} onTouchEnd={() => clearTimeout(pressTimer.current)} className="cursor-pointer select-none py-1"><strong>Version:</strong> Final (Hold for Admin)</p> </div> </Modal> ); };
+        const AdminLoginModal = ({ closeModal }) => { const { t, setIsAdmin } = useAppContext(); const [username, setUsername] = useState(''); const [password, setPassword] = useState(''); const handleLogin = (e) => { e.preventDefault(); if (username === 'mmhanas14@gmail.com' && password === 'ANas@2011') { setIsAdmin(true); closeModal(); } else { alert('Invalid credentials'); } }; return ( <Modal closeModal={closeModal}> <h2 className="text-2xl font-bold mb-4">{t.adminLogin}</h2> <form onSubmit={handleLogin} className="space-y-4"> <input type="text" placeholder={t.username} value={username} onChange={e => setUsername(e.target.value)} className="w-full p-3 bg-slate-100 dark:bg-gray-700 rounded-lg" /> <input type="password" placeholder={t.password} value={password} onChange={e => setPassword(e.target.value)} className="w-full p-3 bg-slate-100 dark:bg-gray-700 rounded-lg" /> <button type="submit" className="w-full py-3 text-white rounded-lg gradient-btn dark:dark-gradient-btn">{t.login}</button> </form> </Modal> ); };
+        const WarningModal = ({ onProceed, onCancel }) => { const { t } = useAppContext(); return ( <Modal closeModal={onCancel}> <h2 className="text-2xl font-bold mb-4 text-center">{t.warningTitle}</h2> <p className="mb-6 text-center text-gray-600 dark:text-gray-400">{t.warningText}</p> <div className="flex justify-center gap-4"> <button onClick={onCancel} className="px-6 py-2 bg-slate-200 dark:bg-gray-700 rounded-lg">{t.cancel}</button> <button onClick={onProceed} className="px-6 py-2 text-white rounded-lg gradient-btn dark:dark-gradient-btn">{t.proceedToOrder}</button> </div> </Modal> ); };
+
+        // --- FLOATING HELP BUTTON (UPDATED) ---
+        const FloatingHelpButton = () => {
+            const [isOpen, setIsOpen] = useState(false);
+            const helpOptions = [
+                { name: 'WhatsApp', icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.886-.001 2.269.655 4.357 1.849 6.081l-1.214 4.439 4.572-1.21z"/></svg>, href: 'https://wa.me/8801924445908', color: 'bg-green-500' },
+                { name: 'Email', icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>, href: 'mailto:mmhanas14@gmail.com', color: 'bg-red-500' },
+                { name: 'Phone', icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>, href: 'tel:+8801924445908', color: 'bg-blue-500' },
+            ];
+
+            return (
+                <div className="fixed bottom-6 left-6 z-40">
+                    <div className="relative flex flex-col items-center gap-3">
+                        {helpOptions.map((option, index) => (
+                             <a
+                                href={option.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                key={option.name}
+                                className={`w-14 h-14 rounded-full text-white flex items-center justify-center shadow-lg transform transition-all duration-300 ease-in-out ${option.color} ${isOpen ? 'opacity-100 translate-y-0' : `opacity-0 -translate-y-4 pointer-events-none`}`}
+                                style={{ transitionDelay: isOpen ? `${index * 50}ms` : '0ms' }}
+                                title={option.name}
+                            >
+                                {option.icon}
+                            </a>
+                        ))}
+                        <button
+                            onClick={() => setIsOpen(!isOpen)}
+                            className="w-16 h-16 rounded-full text-white flex items-center justify-center shadow-2xl transform transition-transform duration-300 hover:scale-110 active:scale-100 gradient-btn dark:dark-gradient-btn"
+                        >
+                           {isOpen ? (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M13 12.586V8h-2v5.414l-2.707 2.707 1.414 1.414L12 13.414l2.293 2.293 1.414-1.414z"></path>
+                                    <path d="M12.5 17H11v-1h1.5a.5.5 0 0 0 .5-.5V14h-1v-1h2v1.5a1.5 1.5 0 0 1-1.5 1.5z"></path>
+                                    <path d="M12 7c.552 0 1 .449 1 1s-.448 1-1 1-1-.449-1-1 .448-1 1-1zm0-1c-1.103 0-2 .897-2 2s.897 2 2 2 2-.897 2-2-.897-2-2-2z"></path>
+                                    <path d="M14 11h-1v-1h1v1zm1-2h-1V8h1v1zm-1-1h-1V7h1v1zM8 11H7v-1h1v1zm1-2H8V8h1v1zm-1-1H7V7h1v1zm6 5h-1v-1h1v1zm1-2h-1v-1h1v1zm-1-1h-1v-1h1v1zM4 12h1v1H4v-1zm1 2h-1v-1h1v1zm-1-1h-1v-1h1v1z"></path>
+                                </svg>
+                            )}
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<AppProvider><App /></AppProvider>, document.getElementById('root'));
+    </script>
+</body>
+</html>
