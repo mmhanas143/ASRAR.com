@@ -198,7 +198,7 @@
         };
 
         // --- ADMIN PANEL & COMPONENTS ---
-        const AdminPanel = () => {
+        const AdminPanel = (fe80::7812cdff:fefc:55cd) => {
             const { t, products, setProducts, setIsAdmin } = useAppContext();
             const [editingProduct, setEditingProduct] = useState(null);
             const handleSave = (product) => { if (product.id) { setProducts(products.map(p => p.id === product.id ? product : p)); } else { setProducts([{ ...product, id: Date.now().toString(), createdAt: Date.now() }, ...products]); } setEditingProduct(null); };
